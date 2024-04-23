@@ -3,17 +3,43 @@
 
 
 * {
-    margin: 0%;
-    padding: 0%;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
     overflow-x: hidden;
     font-family: 'Poppins', sans-serif;
 }
 
-// .app{
-//     margin: 0% 7%;
-// }
+@keyframes appear {
+    from{
+      opacity:0;
+    }
+    to {
+      opacity: 1;
+    }
+}
+  
+@keyframes disappear {
+    from{
+      opacity:1;
+    }
+    to {
+      opacity: 0;
+    }
+}
 
+
+.app{
+    width: 100vw;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    overflow: hidden;
+    line-height: 3rem;
+}
 
 nav {
     width: 100%;
@@ -57,7 +83,8 @@ nav {
             &::placeholder { 
                 color: white;
                 opacity: 0.7; 
-              }
+            }
+
         } 
 
         img {
@@ -86,15 +113,71 @@ nav {
     height: 100vh;
     background-color: black;
     color: white;
-    overflow-Y: hidden;
+    overflow: hidden;
     // overflow-X: scroll;
     display: flex;
+
+    aside {
+        position: absolute;
+        z-index: index 200;
+        top:50%;
+        transform: translateY(-50%);
+        // bottom:0%;
+        // margin: 0% auto;
+        right: 1%;
+        // height: 50vh;
+        width: 100px;
+
+        .indicator {
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            cursor: pointer;
+            margin-bottom: 15%;
+
+            h3 {
+                margin-right: 17px;
+                // flex-shrink: 0;
+            }
+            span {
+                width: 0px;
+                transition: 500ms ease-out;
+                height: 2px;
+                background-color: white;
+            }
+
+            &.active {
+                h3 {
+                    margin-right: 7px;
+                    // flex-shrink: 0;
+                } 
+                span {
+                    width: 50px;
+                    height: 2px;
+                    background-color: white;
+                }
+    
+            }
+        }
+
+        div:last-child {
+            margin-bottom: 0%;
+        }
+    }
 
     .featured-movie {
         flex: none;
         width: 100%;
         position: relative;
         overflow: hidden;
+
+        &.current {
+            animation: appear 500ms forwards
+        }
+
+        &.not-current {
+            animation: disappear 500ms forwards
+        }
        
         img {
             position: absolute;
@@ -107,14 +190,17 @@ nav {
 
         div{
             width: 50%;
-            height: 80%;
+            height: auto;
             z-index: 10;
             position: absolute;
-            top: 30%;
+            // top: 30%;
             left: 0%;
+            top:50%;
+            transform: translateY(-50%);
             padding: 0% 7%;
             display: flex;
             flex-direction: column;
+            // background: yellow;
 
             h1{
                 line-height: 3rem;
@@ -278,11 +364,11 @@ nav {
             padding-top: 2%;
             cursor: pointer;
             border-radius: 50%;
-            transition: 500ms ease-in;
+            transition: 100ms ease-in;
 
             .for-fav {
                 fill: rgba(206, 0, 0, 0.877);
-                transition: 500ms ease-in;
+                transition: 100ms ease-in;
 
             }
 
@@ -305,6 +391,37 @@ nav {
     // grid-gap: 3rem;
 }
 
+
+.footer{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 100;
+
+    div{
+        width: 50%;
+        height: 20%;
+        display: flex;
+        justify-content: center;
+        margin-top: 4%;
+        transform: scale(1.25);
+
+        a, h5{
+            margin-left: 3%;
+            margin-right: 3%;
+
+        }
+    }
+    
+    .the-end{
+        margin-bottom: 5%;
+        color: rgba(32, 32, 32, 0.993)
+    }
+;
+}
 
 @media only screen and (max-width:880px){
     nav {
@@ -332,8 +449,8 @@ nav {
            
             div{
                 width: 80%;
-                height: 100%;
-                top: 25%;
+                // height: 100%;
+                // top: 25%;
             }
         }
         
@@ -342,6 +459,12 @@ nav {
     .movie-list{
         .movie-card{
             width: 40%;
+        }
+    }
+
+    .footer{
+        div{
+            width: 80%
         }
     }
 }
@@ -381,9 +504,9 @@ nav {
         .featured-movie{
            
             div{
-                width: 100%;
-                height: 100%;
-                top: 20%;
+                width: 85%;
+                // height: 100%;
+                // top: 20%;
             }
         }
         

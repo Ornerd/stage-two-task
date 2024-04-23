@@ -5,15 +5,16 @@ import IMDBLogo from './asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2
 const API_IMG="https://image.tmdb.org/t/p/w1280/";
 // const API_GENRE="https://api.themoviedb.org/3/genre/movie/list?language=en";
 
-const MovieBox =({poster_path, title, vote_average , overview})=>{
+const MovieBox =({poster_path, title, vote_average, overview, refs})=>{
+
     return (
-        <div className="featured-movie">
-            <img src={API_IMG+poster_path}></img>
+        <div className="featured-movie" ref={refs}>
+            <img src={API_IMG+poster_path} alt={title}></img>
             <div>
                 <h1>{title}</h1>
                 <span>
-                    <img src={IMDBLogo}/>
-                    <h5>{vote_average * 10 +  "/100"}</h5>
+                    <img src={IMDBLogo} alt='IMDB-logo'/>
+                    <h5>{Math.round(vote_average * 10) +  "/100"}</h5>
                 </span>
                 <h5>{overview}</h5>
                 <button>
