@@ -17,11 +17,13 @@ const API_URLtwo="https://api.themoviedb.org/3/movie/popular?api_key=befa3a6b186
 const App = () => {
 
     const [movies, setMovies] = useState([]);
+    const [displayedAmount, setDisplayedAmount] = useState(12);
     const [featured, setFeatured] = useState([]);
     const [isActive, setIsActive] = useState(false); //the aim is to take out hero section once making a search
     const [currentIndex, setCurrentIndex] = useState(0)
 
     const refs = useRef();
+    let timeOut = null;
 
     var [SearchMovies, setSearchMovies] = useState(['']);
 
@@ -30,7 +32,7 @@ const App = () => {
         .then((res)=>res.json())
         .then(data=>{
             console.log(data.results.slice(0,10))
-            setMovies(data.results.slice(0,12))
+            setMovies(data.results)
         });
         fetch(API_URLtwo)
         .then((res)=>res.json())
@@ -73,11 +75,15 @@ const App = () => {
         setIsActive(true);
       };
 
+
+    const showNext = () => {
+        setCurrentIndex(currentIndex === featured.length - 1 ? 0 : currentIndex + 1)
+    }  
+
     useEffect(()=> {
-        setInterval(()=>{
-            // const newIndex = currentIndex + 1
-            // console.log(newIndex)
-            setCurrentIndex((currentIndex)=> (currentIndex+=1) % 5)
+       timeOut = 
+       setTimeout(()=>{
+            showNext();
 
             function Animate() {
                 refs.current.classList.add("current")
@@ -88,26 +94,18 @@ const App = () => {
 
             Animate();
 
-        }, 2000)
-    },[])
+        }, 5000)
+    })
 
   
     const handleToggle = (featIndex) => {
         setCurrentIndex(featIndex)
-
-        // if (featIndex != currentIndex) {
-        //      console.log(currentIndex)
-        //      console.log(featIndex)
-        //     console.log(refs.current)
-        //    refs.current.classList.add("current")
-        //    refs.current.classList.remove("not-current")
-        // }else{
-        //     refs.current.classList.remove("current")
-        //     refs.current.classList.add("not-current")
-        // }
-        // console.log(currentIndex)
-        // console.log(featured[currentIndex])
+        clearTimeout(timeOut)
     }
+
+    const showMoreMovies = () => {
+        setDisplayedAmount(prevDisplay => prevDisplay + 12);
+    };
 
 
     return (
@@ -154,19 +152,20 @@ const App = () => {
 
             <div className="movie-list-header">
                 <h1>Featured Movies</h1>
-                <h4>See more</h4>
             </div>
 
             {
                 movies?.length > 0
                     ? (
                         <div className="movie-list">                                                 
-                            {movies.map((movieReqs)=><Card key={movieReqs.id}{...movieReqs}/>)}
+                            {movies.slice(0, displayedAmount).map((movieReqs)=><Card key={movieReqs.id}{...movieReqs}/>)}
                         </div>)
                     :(
                         <div> <h2>No Movies found</h2> </div>
                     )
             }
+
+            <h4 className={displayedAmount >= movies.length? "unclickable see-more": "see-more"} onClick={()=>{showMoreMovies()}}>See more</h4>
 
             <Footer/>
 

@@ -318,6 +318,13 @@ nav .to-right {
   transition: 300ms ease-in-out;
 }
 
+.see-more {
+  color: #be123c;
+  text-decoration: underline;
+  text-align: center;
+  cursor: pointer;
+}
+
 .footer {
   width: 100%;
   height: 100%;
@@ -342,6 +349,11 @@ nav .to-right {
 .footer .the-end {
   margin-bottom: 5%;
   color: rgba(32, 32, 32, 0.993);
+}
+
+.unclickable {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 @media only screen and (max-width: 880px) {
