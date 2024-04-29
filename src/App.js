@@ -8,39 +8,76 @@ import './asset/css/App.css';
 import SearchIcon from './asset/icons/search_icon.svg';
 import Logo from './asset/icons/Logo.png';
 import HamMenu from './asset/icons/Menu.svg';
+import Tag from './Tag.jsx';
 
 // const API_URL="https://api.themoviedb.org/3/movie/top_rated?api_key=befa3a6b18663094411ae9c1758fd3a6";  //for the top-rated movies, what actually matters.
-const API_URL="https://api.themoviedb.org/3/movie/popular?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies
-const API_URLtwo="https://api.themoviedb.org/3/movie/popular?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies
-
+const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and release date.
+const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
 
 const App = () => {
-
     const [movies, setMovies] = useState([]);
-    const [displayedAmount, setDisplayedAmount] = useState(12);
+    // const [displayedAmount, setDisplayedAmount] = useState(12);
     const [featured, setFeatured] = useState([]);
     const [isActive, setIsActive] = useState(false); //the aim is to take out hero section once making a search
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [genres, setGenres] = useState([])
+    const [selectedGenre, setSelectedGenre] = useState([])
+ 
 
     const refs = useRef();
     let timeOut = null;
 
     var [SearchMovies, setSearchMovies] = useState(['']);
 
-    useEffect(()=>{
-        fetch(API_URL)
-        .then((res)=>res.json())
-        .then(data=>{
-            console.log(data.results.slice(0,10))
-            setMovies(data.results)
+    const fetchMovies = async (page) => {
+        // console.log(`${API_URL}&with_genres=16&page=${page}`)
+        fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`)
+        try {
+            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`);
+            const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            return [];
+        }
+    }
+
+    const showMoreMovies = () => {
+        const nextPage = currentPage + 1;
+        fetchMovies(nextPage)
+            .then(results => {
+                setMovies(prevMovies => [...prevMovies, ...results]);
+                setCurrentPage(nextPage);
+            })
+            .catch(error => {
+                console.error('Error fetching more movies:', error);
+            });
+    };
+
+    useEffect(()=>{        
+        fetchMovies(currentPage)
+        .then(results => {
+            setMovies(results);
+        })
+        .catch(error => {
+            console.error('Error fetching initial movies:', error);
         });
-        fetch(API_URLtwo)
+
+        fetch(API_URL)
         .then((res)=>res.json())
         .then(data=>{
             console.log(data.results.slice(0,10))
             setFeatured(data.results.slice(0,5))
         })
-    },[])
+
+        fetch(API_URLtwo)
+        .then((res)=>res.json())
+        .then(data=>{
+            console.log(data.genres)
+            setGenres(data.genres)
+        })
+    },[selectedGenre])
 
 
     async function SearchForMovies(e){
@@ -53,7 +90,6 @@ const App = () => {
             const data= await res.json();
             console.log(data);
             setMovies(data.results.slice(0,12)) 
-                       
         }
         catch(e){
             console.log(e)
@@ -103,11 +139,16 @@ const App = () => {
         clearTimeout(timeOut)
     }
 
-    const showMoreMovies = () => {
-        setDisplayedAmount(prevDisplay => prevDisplay + 12);
-    };
+    const handleSelectedGenre = (id) => {
+        if(selectedGenre.includes(id)) {
+            setSelectedGenre((prevIds)=> prevIds.filter(prevId => prevId != id))
+        }else{
+            setSelectedGenre((prevIds)=>[...prevIds, id])
+        }
+        
+    }
 
-
+  
     return (
         <div className="app">
            
@@ -152,20 +193,25 @@ const App = () => {
 
             <div className="movie-list-header">
                 <h1>Featured Movies</h1>
+                <h3>Filter by Genre:</h3>
+                <div className="for-genres">
+                    {genres.map((genre)=> <Tag key={genre.id} genre={genre} handleSelection={handleSelectedGenre} id={genre.id}/>)}
+                </div>
+                
             </div>
 
             {
                 movies?.length > 0
                     ? (
                         <div className="movie-list">                                                 
-                            {movies.slice(0, displayedAmount).map((movieReqs)=><Card key={movieReqs.id}{...movieReqs}/>)}
+                            {movies.map((movieReqs)=><Card key={movieReqs.id}{...movieReqs}/>)}
                         </div>)
                     :(
                         <div> <h2>No Movies found</h2> </div>
                     )
             }
 
-            <h4 className={displayedAmount >= movies.length? "unclickable see-more": "see-more"} onClick={()=>{showMoreMovies()}}>See more</h4>
+            <h4 className="see-more" onClick={()=>{showMoreMovies()}}>See more</h4>
 
             <Footer/>
 

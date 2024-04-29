@@ -14,7 +14,7 @@ const Card =({ poster_path, release_date, title, vote_average })=>{
     }
 
         return (
-            <div data-testid="movie-card" className="movie-card">
+            <div data-testid="movie-card" className="movie-card prevent-select">
                 <button className={isFav?'favorite':'for-clicks'} onClick={toggleFavourite}>
                     <svg stroke="#ffffff" fill="#ffffff" stroke-width="0" viewBox="0 0 16 16" className="for-fav" height="1.5em" width="1.5em" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
