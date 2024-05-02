@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MovieBox from './MovieBox';
-import Card from './Card';
-import Indicator from './Indicator';
-import Footer from './footer';
+import MovieBox from './components/MovieBox.jsx';
+import Card from './components/Card.jsx';
+import Indicator from './components/Indicator.jsx';
+import Footer from './components/footer.jsx';
 import './asset/css/App.css';
 import SearchIcon from './asset/icons/search_icon.svg';
 import Logo from './asset/icons/Logo.png';
 import HamMenu from './asset/icons/Menu.svg';
-import Tag from './Tag.jsx';
+import Tag from './components/Tag.jsx';
+import SuggestedWord from './components/SuggestedWord.jsx';
 
 // const API_URL="https://api.themoviedb.org/3/movie/top_rated?api_key=befa3a6b18663094411ae9c1758fd3a6";  //for the top-rated movies, what actually matters.
-const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and release date.
+const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and probably release date.
 const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
     let timeOut = null;
 
     var [SearchMovies, setSearchMovies] = useState(['']);
+    var [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
 
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
@@ -55,6 +57,10 @@ const App = () => {
             });
     };
 
+    // useEffect(()=> { //a little fix to reset page number of API results back to page 1 when new genres are added or removed, so that new filters can begin from the very top, all the time.
+       
+    // }, [selectedGenre])
+
     useEffect(()=>{        
         fetchMovies(currentPage)
         .then(results => {
@@ -77,7 +83,9 @@ const App = () => {
             console.log(data.genres)
             setGenres(data.genres)
         })
-    },[selectedGenre])
+
+
+    },[selectedGenre, currentPage])
 
 
     async function SearchForMovies(e){
@@ -90,6 +98,23 @@ const App = () => {
             const data= await res.json();
             console.log(data);
             setMovies(data.results.slice(0,12)) 
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+
+    async function loadMovieSuggestions(e){
+        e.preventDefault();
+        console.log('searching')
+
+        try{
+            const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${SearchMovies}`
+            const res = await fetch (url);
+            const data = await res.json();
+            console.log(moviesSuggestionList);
+
+            setMoviesSuggestionList(data.results.slice(0,12))
         }
         catch(e){
             console.log(e)
@@ -140,12 +165,12 @@ const App = () => {
     }
 
     const handleSelectedGenre = (id) => {
+         setCurrentPage(1)  // setCurrentPage(1) is a little fix to reset page number of API results back to page 1 when new genres are added or removed, so that new filters can begin from the very top, all the time.
         if(selectedGenre.includes(id)) {
-            setSelectedGenre((prevIds)=> prevIds.filter(prevId => prevId != id))
+            setSelectedGenre((prevIds)=> prevIds.filter(prevId => prevId !== id))
         }else{
             setSelectedGenre((prevIds)=>[...prevIds, id])
         }
-        
     }
 
   
@@ -163,16 +188,17 @@ const App = () => {
                     <input
                         placeholder="What do you want to watch?"
                         value={SearchMovies}
-                        onChange={(e)=> setSearchMovies(e.target.value)}
-                        onSubmit= {function(e){{SearchForMovies(e);HandleClick()}}}
+                        onChange={(e)=> {setSearchMovies(e.target.value); loadMovieSuggestions(e)}}
+                        onSubmit= {(e)=> {{SearchForMovies(e);HandleClick()}}}
                         onKeyDown={handleKeyDown}
                     />
                     <img
                         src={SearchIcon}
                         alt="search"
-                        onClick= {function(e){{SearchForMovies(e);HandleClick()}}}                        
+                        onClick= {(e)=> {{SearchForMovies(e);HandleClick()}}}                        
                     />
                 </div>
+                             
 
                 <div className="to-right">
                     <h4>Sign in</h4>
@@ -181,6 +207,10 @@ const App = () => {
                         alt="ham-menu"/>
                 </div>
             </nav>
+
+            <div className='sugggested-word-container'>
+                    {moviesSuggestionList.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions}/>)}
+                </div>
             
             <div className={isActive ? 'display-hidden' : 'featured'}>
                  {/* {featured.map((featuredReqs)=><MovieBox key={featuredReqs.id}{...featuredReqs}/>)} */}

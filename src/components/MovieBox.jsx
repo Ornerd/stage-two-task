@@ -1,5 +1,5 @@
 import React from 'react';
-import IMDBLogo from './asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@ 1.png';
+import IMDBLogo from '../asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@ 1.png';
 
 
 const API_IMG="https://image.tmdb.org/t/p/w1280/";
