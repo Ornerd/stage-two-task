@@ -10,6 +10,7 @@ import Logo from './asset/icons/Logo.png';
 import HamMenu from './asset/icons/Menu.svg';
 import Tag from './components/Tag.jsx';
 import SuggestedWord from './components/SuggestedWord.jsx';
+import useDebounce from './hooks/useDebounce.jsx';
 
 // const API_URL="https://api.themoviedb.org/3/movie/top_rated?api_key=befa3a6b18663094411ae9c1758fd3a6";  //for the top-rated movies, what actually matters.
 const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and probably release date.
@@ -28,9 +29,12 @@ const App = () => {
 
     const refs = useRef();
     let timeOut = null;
+    
 
-    var [SearchMovies, setSearchMovies] = useState(['']);
+    var [SearchMovies, setSearchMovies] = useState('');
     var [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
+
+    const debouncedSearchterm = useDebounce(SearchMovies, 500);
 
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
@@ -57,9 +61,6 @@ const App = () => {
             });
     };
 
-    // useEffect(()=> { //a little fix to reset page number of API results back to page 1 when new genres are added or removed, so that new filters can begin from the very top, all the time.
-       
-    // }, [selectedGenre])
 
     useEffect(()=>{        
         fetchMovies(currentPage)
@@ -88,38 +89,68 @@ const App = () => {
     },[selectedGenre, currentPage])
 
 
+    const handleSearch = async (suggestions) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
+        
+        try{
+            const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${suggestions.title}`
+            const res = await fetch (url);
+            const data= await res.json();
+            setMovies(data.results.slice(0,12)) 
+            // setSearchMovies('')
+            setMoviesSuggestionList([])
+
+            
+        }
+        catch(e){
+            console.log(e)
+        }
+    }  
+
     async function SearchForMovies(e){
-        e.preventDefault();
-        console.log('searching')
+        console.log('searching', e)
 
         try{
             const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${SearchMovies}`
             const res = await fetch (url);
             const data= await res.json();
-            console.log(data);
             setMovies(data.results.slice(0,12)) 
+            // setSearchMovies('')
+            setMoviesSuggestionList([])
         }
         catch(e){
             console.log(e)
         }
     }
 
-    async function loadMovieSuggestions(e){
-        e.preventDefault();
-        console.log('searching')
+   
+    useEffect(()=> {
+        async function loadMovieSuggestions(e){
+            console.log('searching', e)
+            
+            try{
+                const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${debouncedSearchterm}`
+                const res = await fetch (url);
+                const data = await res.json();
+    
+                setMoviesSuggestionList(data.results.slice(0,7))
 
-        try{
-            const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${SearchMovies}`
-            const res = await fetch (url);
-            const data = await res.json();
-            console.log(moviesSuggestionList);
+            }
+            catch(e){
+                console.log(e)
+            }            
+        }
 
-            setMoviesSuggestionList(data.results.slice(0,12))
+        if (debouncedSearchterm) {
+            loadMovieSuggestions();
+        }  
+    }, [debouncedSearchterm])
+
+    useEffect(()=> {
+        if(SearchMovies === '') {
+            setMoviesSuggestionList([])
         }
-        catch(e){
-            console.log(e)
-        }
-    }
+    }, [SearchMovies])
+
 
     const refreshPage= ()=>{
         window.location.reload();
@@ -132,6 +163,7 @@ const App = () => {
         }
       };
 
+    
     function HandleClick() {
         setIsActive(true);
       };
@@ -145,19 +177,10 @@ const App = () => {
        timeOut = 
        setTimeout(()=>{
             showNext();
-
-            function Animate() {
-                refs.current.classList.add("current")
-                setTimeout(()=> {
-                    refs.current.classList.remove("current")  
-                }, 1000)
-            }
-
-            Animate();
-
         }, 5000)
     })
 
+  
   
     const handleToggle = (featIndex) => {
         setCurrentIndex(featIndex)
@@ -173,6 +196,7 @@ const App = () => {
         }
     }
 
+    
   
     return (
         <div className="app">
@@ -188,7 +212,7 @@ const App = () => {
                     <input
                         placeholder="What do you want to watch?"
                         value={SearchMovies}
-                        onChange={(e)=> {setSearchMovies(e.target.value); loadMovieSuggestions(e)}}
+                        onChange={(e)=> {setSearchMovies(e.target.value)}}
                         onSubmit= {(e)=> {{SearchForMovies(e);HandleClick()}}}
                         onKeyDown={handleKeyDown}
                     />
@@ -209,12 +233,19 @@ const App = () => {
             </nav>
 
             <div className='sugggested-word-container'>
-                    {moviesSuggestionList.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions}/>)}
+                    {SearchMovies? moviesSuggestionList.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
                 </div>
             
-            <div className={isActive ? 'display-hidden' : 'featured'}>
-                 {/* {featured.map((featuredReqs)=><MovieBox key={featuredReqs.id}{...featuredReqs}/>)} */}
-                 <MovieBox key={featured[currentIndex]}{...featured[currentIndex]} refs={refs}/>
+            <div className={isActive ? 'display-hidden' : 'featured'} onClick={()=> setMoviesSuggestionList([])}>
+                 {featured.map((featuredReqs, index)=> {
+                    if (index === currentIndex) {
+                        return (<MovieBox key={index}{...featuredReqs} currentIndex={currentIndex} index = {index}/>)
+                    } else {
+                        return (null)
+                    }
+                 }
+                  )}
+                 {/* <MovieBox key={featured[currentIndex]}{...featured[currentIndex]} refs={refs}/> */}
 
                  <aside>
                     {featured.map((featured, featIndex)=><Indicator key={featured[featIndex]} label = {featIndex + 1} handleToggle={handleToggle} slideIndex={featIndex} currentIndex={currentIndex}/>)}
