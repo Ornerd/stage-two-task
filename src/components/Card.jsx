@@ -5,7 +5,7 @@ import IMDBLogo from '../asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ
 
 const API_IMG="https://image.tmdb.org/t/p/w500/"
 
-const Card =({ poster_path, release_date, title, vote_average })=>{
+const Card =({ poster_path, release_date, title, vote_average, genre_ids, genres })=>{
 
     var [isFav, setIsFav] = useState(false);
 
@@ -23,12 +23,18 @@ const Card =({ poster_path, release_date, title, vote_average })=>{
                 <img data-testid="movie-poster" src={API_IMG+poster_path !=="https://image.tmdb.org/t/p/w500/null"? API_IMG+poster_path: 'https://via.placeholder.com/400x600'} alt={title}/>
                 <div>
                     <h6 data-testid="movie-release-date">{release_date}</h6>
-                    <h3 data-testid="movie-title">{title}</h3>
+                    <h3 data-testid="movie-title">{title} </h3>
                     <div>
                         <img src={IMDBLogo} alt='IMDB-logo'/>
                         <h6>{Math.round(vote_average * 10) +  "/100"}</h6>
                     </div>
-                    {/* <h4>{API_GENRE}</h4> */}
+                    <div>
+                        {genre_ids.map((id, index) => {  //mapping corrected by chatGPT to include a return function
+                            const genre = genres.find(g => g.id === id);
+                            return genre ? index === genre_ids.length-1 ?<h6 key={genre.id}>{genre.name}</h6> : <h6 key={genre.id}>{genre.name},</h6> : null;  // the whole index === genre_ids.length-1 ? ish was mainly to add a comma in between genres, giving it a semblance to the figma design. ChatGPT didn't give me that idea I promise; ChatGPTs method infact was slightly longer....
+                        })}
+                    </div>
+                    
                 </div>
                 
             </div>

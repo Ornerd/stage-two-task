@@ -151,6 +151,7 @@ nav .to-right {
 }
 .featured aside .indicator h3 {
   margin-right: 17px;
+  opacity: 0.5;
 }
 .featured aside .indicator span {
   width: 0px;
@@ -160,6 +161,7 @@ nav .to-right {
 }
 .featured aside .indicator.active h3 {
   margin-right: 7px;
+  opacity: 1;
 }
 .featured aside .indicator.active span {
   width: 50px;
@@ -186,7 +188,7 @@ nav .to-right {
   top: 0%;
   left: 0%;
   width: 100%;
-  height: 180%;
+  height: 100%;
   filter: brightness(30%);
 }
 .featured .featured-movie div {
@@ -310,13 +312,12 @@ nav .to-right {
   position: relative;
 }
 .movie-list .movie-card div {
-  width: -moz-fit-content;
-  width: fit-content;
+  width: 100%;
   height: -moz-fit-content;
   height: fit-content;
 }
 .movie-list .movie-card div > * {
-  margin-bottom: 3%;
+  margin-bottom: 1%;
 }
 .movie-list .movie-card div div {
   width: 100%;
@@ -327,6 +328,14 @@ nav .to-right {
 .movie-list .movie-card div div img {
   width: 30px;
   margin-right: 5%;
+}
+.movie-list .movie-card div div:last-child {
+  width: 100%;
+  flex-wrap: wrap;
+}
+.movie-list .movie-card div div:last-child h6 {
+  margin-right: 2%;
+  position: relative;
 }
 .movie-list .movie-card img {
   width: 100%;

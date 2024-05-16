@@ -15,6 +15,7 @@ import useDebounce from './hooks/useDebounce.jsx';
 // const API_URL="https://api.themoviedb.org/3/movie/top_rated?api_key=befa3a6b18663094411ae9c1758fd3a6";  //for the top-rated movies, what actually matters.
 const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and probably release date.
 const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
+const API_URL_for_search="https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"
 
 const App = () => {
     const [movies, setMovies] = useState([]);
@@ -34,6 +35,22 @@ const App = () => {
     var [SearchMovies, setSearchMovies] = useState('');
     var [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
 
+    const uniqueTitlesSet = new Set(); //helped by Chat GPT, to sort out suggested movie titles ensuring that one name desn't repeat twi
+
+// Use filter to keep only unique movie titles while maintaining the order
+    const uniqueMovies = moviesSuggestionList.filter(movie => {
+        // Convert movie to lowercase for case-insensitive comparison
+        const lowerCaseMovie = movie.title.toLowerCase();
+
+        // Check if the lowercase movie title is already in the Set
+        if (!uniqueTitlesSet.has(lowerCaseMovie)) {
+            uniqueTitlesSet.add(lowerCaseMovie); // If not, add it to the Set
+            return true; // Keep the movie title in the filtered array
+        } else {
+            return false; // Skip the duplicate movie title
+        }
+    }).slice(0,7);
+
     const debouncedSearchterm = useDebounce(SearchMovies, 500);
 
     const fetchMovies = async (page) => {
@@ -41,6 +58,18 @@ const App = () => {
         fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`)
         try {
             const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`);
+            const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            return [];
+        }
+    }
+    const fetchSearchedMovie = async (query) => {
+        // console.log(`${API_URL}&with_genres=16&page=${page}`)
+        fetch(`${API_URL_for_search}&query=${query}`)
+        try {
+            const response = await fetch(`${API_URL_for_search}&query=${query}`);
             const data = await response.json();
             return data.results;
         } catch (error) {
@@ -62,7 +91,8 @@ const App = () => {
     };
 
 
-    useEffect(()=>{        
+    useEffect(()=>{ 
+        setMovies([])       
         fetchMovies(currentPage)
         .then(results => {
             setMovies(results);
@@ -71,7 +101,7 @@ const App = () => {
             console.error('Error fetching initial movies:', error);
         });
 
-        fetch(API_URL)
+        fetch(API_URL)  //for hero section
         .then((res)=>res.json())
         .then(data=>{
             console.log(data.results.slice(0,10))
@@ -86,58 +116,47 @@ const App = () => {
         })
 
 
-    },[selectedGenre, currentPage])
+    },[selectedGenre])
 
 
     const handleSearch = async (suggestions) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
         
-        try{
-            const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${suggestions.title}`
-            const res = await fetch (url);
-            const data= await res.json();
-            setMovies(data.results.slice(0,12)) 
-            // setSearchMovies('')
+        fetchSearchedMovie(suggestions.title)
+        .then(results => {
+            setMovies(results.slice(0,12)) 
             setMoviesSuggestionList([])
+        })
+        .catch(error => {
+            console.error('Error fetching more movies:', error);
+        });
 
-            
-        }
-        catch(e){
-            console.log(e)
-        }
     }  
 
-    async function SearchForMovies(e){
-        console.log('searching', e)
+    async function SearchForMovies(){
 
-        try{
-            const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${SearchMovies}`
-            const res = await fetch (url);
-            const data= await res.json();
-            setMovies(data.results.slice(0,12)) 
-            // setSearchMovies('')
+        fetchSearchedMovie(SearchMovies)
+        .then(results => {
+            setMovies(results.slice(0,12)) 
             setMoviesSuggestionList([])
-        }
-        catch(e){
-            console.log(e)
-        }
+        })
+        .catch(error => {
+            console.error('Error fetching more movies:', error);
+        });
+
     }
 
    
     useEffect(()=> {
-        async function loadMovieSuggestions(e){
-            console.log('searching', e)
-            
-            try{
-                const url=`https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6&query=${debouncedSearchterm}`
-                const res = await fetch (url);
-                const data = await res.json();
-    
-                setMoviesSuggestionList(data.results.slice(0,7))
+        async function loadMovieSuggestions(){
 
-            }
-            catch(e){
-                console.log(e)
-            }            
+            fetchSearchedMovie(debouncedSearchterm)
+            .then(results => {
+                setMoviesSuggestionList(results)
+            })
+            .catch(error => {
+                console.error('Error fetching more movies:', error);
+            });
+              
         }
 
         if (debouncedSearchterm) {
@@ -208,20 +227,20 @@ const App = () => {
                     onClick={refreshPage}
                 />
 
-                <div className={isActive ? 'inverted' : 'search-bar'}>
+                <form className={isActive ? 'inverted' : 'search-bar'} role="search">
                     <input
                         placeholder="What do you want to watch?"
                         value={SearchMovies}
                         onChange={(e)=> {setSearchMovies(e.target.value)}}
-                        onSubmit= {(e)=> {{SearchForMovies(e);HandleClick()}}}
+                        onSubmit= {()=> {{SearchForMovies();HandleClick()}}}
                         onKeyDown={handleKeyDown}
                     />
                     <img
                         src={SearchIcon}
                         alt="search"
-                        onClick= {(e)=> {{SearchForMovies(e);HandleClick()}}}                        
+                        onClick= {()=> {{SearchForMovies();HandleClick()}}}                        
                     />
-                </div>
+                </form>
                              
 
                 <div className="to-right">
@@ -233,7 +252,7 @@ const App = () => {
             </nav>
 
             <div className='sugggested-word-container'>
-                    {SearchMovies? moviesSuggestionList.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
+                    {SearchMovies? uniqueMovies.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
                 </div>
             
             <div className={isActive ? 'display-hidden' : 'featured'} onClick={()=> setMoviesSuggestionList([])}>
@@ -265,7 +284,7 @@ const App = () => {
                 movies?.length > 0
                     ? (
                         <div className="movie-list">                                                 
-                            {movies.map((movieReqs)=><Card key={movieReqs.id}{...movieReqs}/>)}
+                            {movies.map((movieReqs)=><Card genres={genres} key={movieReqs.id}{...movieReqs}/>)}
                         </div>)
                     :(
                         <div> <h2>No Movies found</h2> </div>

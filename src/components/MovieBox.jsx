@@ -5,11 +5,11 @@ import IMDBLogo from '../asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ
 const API_IMG="https://image.tmdb.org/t/p/w1280/";
 // const API_GENRE="https://api.themoviedb.org/3/genre/movie/list?language=en";
 
-const MovieBox =({poster_path, title, vote_average, overview, currentIndex, index, refs})=>{
+const MovieBox =({backdrop_path, poster_path, title, vote_average, overview, currentIndex, index, refs})=>{
 
     return (
         <div className={currentIndex === index?"featured-movie current ":"featured-movie"} ref={refs}>
-            <img src={API_IMG+poster_path} alt={title}></img>
+            <img src={API_IMG+ `${window.innerWidth > window.innerHeight ? backdrop_path: poster_path}`} alt={title}></img>
             <div>
                 <h1>{title}</h1>
                 <span>
