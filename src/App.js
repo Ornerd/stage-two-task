@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import MovieBox from './components/MovieBox.jsx';
 import Card from './components/Card.jsx';
@@ -12,8 +12,7 @@ import Tag from './components/Tag.jsx';
 import SuggestedWord from './components/SuggestedWord.jsx';
 import useDebounce from './hooks/useDebounce.jsx';
 
-// const API_URL="https://api.themoviedb.org/3/movie/top_rated?api_key=befa3a6b18663094411ae9c1758fd3a6";  //for the top-rated movies, what actually matters.
-const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for popular movies, now changed to discover movies to allow for filtering by genre, and probably release date.
+const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //formely popular movies endpoint was used, now changed to this discover movies endpoint to allow for filtering by genre, and probably release date.
 const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
 const API_URL_for_search="https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"
 
@@ -21,38 +20,22 @@ const App = () => {
     const [movies, setMovies] = useState([]);
     // const [displayedAmount, setDisplayedAmount] = useState(12);
     const [featured, setFeatured] = useState([]);
-    const [isActive, setIsActive] = useState(false); //the aim is to take out hero section once making a search
     const [currentIndex, setCurrentIndex] = useState(0)
     const [currentPage, setCurrentPage] = useState(1)
     const [genres, setGenres] = useState([])
     const [selectedGenre, setSelectedGenre] = useState([])
  
 
-    const refs = useRef();
     let timeOut = null;
     
 
     var [SearchMovies, setSearchMovies] = useState('');
     var [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
 
-    const uniqueTitlesSet = new Set(); //helped by Chat GPT, to sort out suggested movie titles ensuring that one name desn't repeat twi
-
-// Use filter to keep only unique movie titles while maintaining the order
-    const uniqueMovies = moviesSuggestionList.filter(movie => {
-        // Convert movie to lowercase for case-insensitive comparison
-        const lowerCaseMovie = movie.title.toLowerCase();
-
-        // Check if the lowercase movie title is already in the Set
-        if (!uniqueTitlesSet.has(lowerCaseMovie)) {
-            uniqueTitlesSet.add(lowerCaseMovie); // If not, add it to the Set
-            return true; // Keep the movie title in the filtered array
-        } else {
-            return false; // Skip the duplicate movie title
-        }
-    }).slice(0,7);
-
     const debouncedSearchterm = useDebounce(SearchMovies, 500);
+    const uniqueTitlesSet = new Set(); //helped by Chat GPT, to sort out suggested movie titles ensuring that one name desn't repeat twiCE
 
+    
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
         fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`)
@@ -77,19 +60,6 @@ const App = () => {
             return [];
         }
     }
-
-    const showMoreMovies = () => {
-        const nextPage = currentPage + 1;
-        fetchMovies(nextPage)
-            .then(results => {
-                setMovies(prevMovies => [...prevMovies, ...results]);
-                setCurrentPage(nextPage);
-            })
-            .catch(error => {
-                console.error('Error fetching more movies:', error);
-            });
-    };
-
 
     useEffect(()=>{ 
         setMovies([])       
@@ -118,6 +88,24 @@ const App = () => {
 
     },[selectedGenre])
 
+   
+    useEffect(()=> {
+        async function loadMovieSuggestions(){
+
+            fetchSearchedMovie(debouncedSearchterm)
+            .then(results => {
+                setMoviesSuggestionList(results)
+            })
+            .catch(error => {
+                console.error('Error fetching more movies:', error);
+            });
+              
+        }
+
+        if (debouncedSearchterm) {
+            loadMovieSuggestions();
+        }  
+    }, [debouncedSearchterm])
 
     const handleSearch = async (suggestions) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
         
@@ -145,31 +133,41 @@ const App = () => {
 
     }
 
-   
-    useEffect(()=> {
-        async function loadMovieSuggestions(){
+    // Use filter to keep only unique movie titles while maintaining the order
+    const uniqueMovies = moviesSuggestionList.filter(movie => {
+        // Convert movie to lowercase for case-insensitive comparison
+        const lowerCaseMovie = movie.title.toLowerCase();
 
-            fetchSearchedMovie(debouncedSearchterm)
+        // Check if the lowercase movie title is already in the Set
+        if (!uniqueTitlesSet.has(lowerCaseMovie)) {
+            uniqueTitlesSet.add(lowerCaseMovie); // If not, add it to the Set
+            return true; // Keep the movie title in the filtered array
+        } else {
+            return false; // Skip the duplicate movie title
+        }
+    }).slice(0,7);
+
+   
+    const showMoreMovies = () => {
+        const nextPage = currentPage + 1;
+        fetchMovies(nextPage)
             .then(results => {
-                setMoviesSuggestionList(results)
+                setMovies(prevMovies => [...prevMovies, ...results]);
+                setCurrentPage(nextPage);
             })
             .catch(error => {
                 console.error('Error fetching more movies:', error);
             });
-              
-        }
+    };
 
-        if (debouncedSearchterm) {
-            loadMovieSuggestions();
-        }  
-    }, [debouncedSearchterm])
+
+ 
 
     useEffect(()=> {
         if(SearchMovies === '') {
             setMoviesSuggestionList([])
         }
     }, [SearchMovies])
-
 
     const refreshPage= ()=>{
         window.location.reload();
@@ -178,15 +176,8 @@ const App = () => {
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             SearchForMovies(e);
-            HandleClick();
         }
       };
-
-    
-    function HandleClick() {
-        setIsActive(true);
-      };
-
 
     const showNext = () => {
         setCurrentIndex(currentIndex === featured.length - 1 ? 0 : currentIndex + 1)
@@ -199,8 +190,7 @@ const App = () => {
         }, 5000)
     })
 
-  
-  
+   
     const handleToggle = (featIndex) => {
         setCurrentIndex(featIndex)
         clearTimeout(timeOut)
@@ -227,18 +217,18 @@ const App = () => {
                     onClick={refreshPage}
                 />
 
-                <form className={isActive ? 'inverted' : 'search-bar'} role="search">
+                <form className='search-bar' role="search">
                     <input
                         placeholder="What do you want to watch?"
                         value={SearchMovies}
                         onChange={(e)=> {setSearchMovies(e.target.value)}}
-                        onSubmit= {()=> {{SearchForMovies();HandleClick()}}}
+                        onSubmit= {()=> {SearchForMovies()}}
                         onKeyDown={handleKeyDown}
                     />
                     <img
                         src={SearchIcon}
                         alt="search"
-                        onClick= {()=> {{SearchForMovies();HandleClick()}}}                        
+                        onClick= {()=> {SearchForMovies()}}                        
                     />
                 </form>
                              
@@ -255,16 +245,15 @@ const App = () => {
                     {SearchMovies? uniqueMovies.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
                 </div>
             
-            <div className={isActive ? 'display-hidden' : 'featured'} onClick={()=> setMoviesSuggestionList([])}>
-                 {featured.map((featuredReqs, index)=> {
+            <div className='featured' onClick={()=> setMoviesSuggestionList([])}>
+                 {featured.map((featuredMovie, index)=> {
                     if (index === currentIndex) {
-                        return (<MovieBox key={index}{...featuredReqs} currentIndex={currentIndex} index = {index}/>)
+                        return (<MovieBox key={featuredMovie.id}{...featuredMovie} currentIndex={currentIndex} index = {index}/>)
                     } else {
                         return (null)
                     }
                  }
                   )}
-                 {/* <MovieBox key={featured[currentIndex]}{...featured[currentIndex]} refs={refs}/> */}
 
                  <aside>
                     {featured.map((featured, featIndex)=><Indicator key={featured[featIndex]} label = {featIndex + 1} handleToggle={handleToggle} slideIndex={featIndex} currentIndex={currentIndex}/>)}
@@ -284,7 +273,7 @@ const App = () => {
                 movies?.length > 0
                     ? (
                         <div className="movie-list">                                                 
-                            {movies.map((movieReqs)=><Card genres={genres} key={movieReqs.id}{...movieReqs}/>)}
+                            {movies.map((movie)=><Card genres={genres} key={movie.id}{...movie}/>)}
                         </div>)
                     :(
                         <div> <h2>No Movies found</h2> </div>

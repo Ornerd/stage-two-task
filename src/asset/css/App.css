@@ -308,7 +308,6 @@ nav .to-right {
   margin: 2%;
   height: -moz-fit-content;
   height: fit-content;
-  cursor: pointer;
   position: relative;
 }
 .movie-list .movie-card div {
@@ -339,10 +338,15 @@ nav .to-right {
 }
 .movie-list .movie-card img {
   width: 100%;
+  cursor: pointer;
 }
 .movie-list .movie-card h3 {
   line-height: 1.5rem;
-  overflow-y: hidden;
+  overflow: hidden;
+  cursor: pointer;
+}
+.movie-list .movie-card h3:hover {
+  color: #5a091d;
 }
 .movie-list .movie-card .for-clicks {
   position: absolute;
@@ -351,11 +355,14 @@ nav .to-right {
   z-index: 200;
   background-color: rgba(255, 255, 255, 0.267);
   border: none;
-  width: 14%;
-  height: 8%;
+  width: 30px;
+  height: 30px;
   padding-top: 2%;
   cursor: pointer;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .movie-list .movie-card .for-clicks .for-fav {
   fill: rgba(255, 255, 255, 0.26);
@@ -367,12 +374,15 @@ nav .to-right {
   z-index: 200;
   background-color: rgba(0, 0, 0, 0.438);
   border: none;
-  width: 14%;
-  height: 8%;
+  width: 30px;
+  height: 30px;
   padding-top: 2%;
   cursor: pointer;
   border-radius: 50%;
   transition: 100ms ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .movie-list .movie-card .favorite .for-fav {
   fill: rgba(206, 0, 0, 0.877);
