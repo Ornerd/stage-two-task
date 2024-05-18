@@ -8,9 +8,9 @@ const API_IMG="https://image.tmdb.org/t/p/w1280/";
 const MovieBox =({backdrop_path, poster_path, title, vote_average, overview, currentIndex, index, refs})=>{
 
     return (
-        <div className={currentIndex === index?"featured-movie current ":"featured-movie"} ref={refs}>
+        <div className={currentIndex === index?"featured-movie current prevent-select":"featured-movie"} ref={refs}>
             <img src={API_IMG+ `${window.innerWidth > window.innerHeight ? backdrop_path: poster_path}`} alt={title}></img>
-            <div>
+            <div >
                 <h1>{title}</h1>
                 <span>
                     <img src={IMDBLogo} alt='IMDB-logo'/>

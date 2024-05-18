@@ -217,6 +217,7 @@ const App = () => {
                     onClick={refreshPage}
                 />
 
+                <div className='search-container'>
                 <form className='search-bar' role="search">
                     <input
                         placeholder="What do you want to watch?"
@@ -231,6 +232,11 @@ const App = () => {
                         onClick= {()=> {SearchForMovies()}}                        
                     />
                 </form>
+                <div className='sugggested-word-container'>
+                    {SearchMovies? uniqueMovies.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
+                </div>
+                </div>
+               
                              
 
                 <div className="to-right">
@@ -239,11 +245,10 @@ const App = () => {
                         src={HamMenu}
                         alt="ham-menu"/>
                 </div>
+
             </nav>
 
-            <div className='sugggested-word-container'>
-                    {SearchMovies? uniqueMovies.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
-                </div>
+            
             
             <div className='featured' onClick={()=> setMoviesSuggestionList([])}>
                  {featured.map((featuredMovie, index)=> {
