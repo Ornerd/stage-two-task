@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Tag = ({genre, handleSelection, id}) => {
+const GenreTag = ({genre, handleSelection, id}) => {
     const [selected, setSelected] = useState(false);
 
     const handleSelect = ()=> {
@@ -10,10 +10,10 @@ const Tag = ({genre, handleSelection, id}) => {
 
 
   return (
-    <span onClick={handleSelect} className={selected? 'selected prevent-select': 'prevent-select'}>
+    <span onClick={handleSelect} className={selected? 'selected prevent-select' : 'prevent-select'}>
       {genre.name}
     </span>
   )
 }
 
-export default Tag
+export default GenreTag

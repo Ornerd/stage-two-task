@@ -25,7 +25,7 @@ const Card =({ id, poster_path, release_date, title, vote_average, genre_ids, ge
                 <img data-testid="movie-poster" src={API_IMG+poster_path !=="https://image.tmdb.org/t/p/w500/null"? API_IMG+poster_path: 'https://via.placeholder.com/400x600'} alt={title}/>
                 </Link>
                 <div>
-                    <h6 data-testid="movie-release-date">{release_date}</h6>
+                    <h6 data-testid="movie-release-date">{release_date.split('-')[0]}</h6>
                     <Link to={`/${id}`}><h3 data-testid="movie-title">{title}</h3></Link>
                     <div>
                         <img src={IMDBLogo} alt='IMDB-logo'/>

@@ -312,13 +312,17 @@ nav {
 
 .movie-list-header {
     width: 100%;
-    margin: 5% 0;
+    margin: 5% 0% 1% 0%;
     padding: 0 10%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
 
+    h2 {
+        margin-top: 2%;
+        margin-bottom: 0;
+    }
     h3 {
         margin-top: 2%;
     }
@@ -332,7 +336,7 @@ nav {
         margin: 5px 10px 0 0;
         cursor: pointer;
         padding: 2px;
-        
+
         &:hover {
             color: red;
         }
@@ -526,7 +530,7 @@ nav {
             justify-content: right;
         }
 
-        .search-bar{
+        .search-container{
             height: 40%;
 
             input {
@@ -540,7 +544,55 @@ nav {
     }
 
     .featured{
-        height: 85vh;
+        height: 100vh;
+        .featured-movie{
+           
+            div{
+                width: 80%;
+                // height: 100%;
+                // top: 25%;
+            }
+        }
+        
+    }
+
+    .movie-list{
+        .movie-card{
+            width: 40%;
+        }
+    }
+
+    .footer{
+        div{
+            width: 80%
+        }
+    }
+}
+
+@media only screen and (max-width: 960px) and (max-height:500px) and (orientation:landscape) {
+    nav {
+        height: 20vh;
+        
+        .to-right{
+            width: 20%;
+            justify-content: right;
+        }
+
+        .search-container{
+            height: 40%;
+
+            input {
+                &::placeholder { 
+                    color: white;
+                    opacity: 0.5; 
+                    font-size: 0.7rem;
+                  }
+            }
+        }
+    }
+
+    .featured{
+        height: 200vh;
         .featured-movie{
            
             div{
@@ -596,7 +648,7 @@ nav {
     }
 
     .featured{
-        height: 90vh;
+        height: 100vh;
         .featured-movie{
            
             div{

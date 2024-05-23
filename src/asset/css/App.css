@@ -270,12 +270,16 @@ nav .to-right h4 {
 
 .movie-list-header {
   width: 100%;
-  margin: 5% 0;
+  margin: 5% 0% 1% 0%;
   padding: 0 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+}
+.movie-list-header h2 {
+  margin-top: 2%;
+  margin-bottom: 0;
 }
 .movie-list-header h3 {
   margin-top: 2%;
@@ -444,21 +448,55 @@ nav .to-right h4 {
     width: 20%;
     justify-content: right;
   }
-  nav .search-bar {
+  nav .search-container {
     height: 40%;
   }
-  nav .search-bar input::-moz-placeholder {
+  nav .search-container input::-moz-placeholder {
     color: white;
     opacity: 0.5;
     font-size: 0.7rem;
   }
-  nav .search-bar input::placeholder {
+  nav .search-container input::placeholder {
     color: white;
     opacity: 0.5;
     font-size: 0.7rem;
   }
   .featured {
-    height: 85vh;
+    height: 100vh;
+  }
+  .featured .featured-movie div {
+    width: 80%;
+  }
+  .movie-list .movie-card {
+    width: 40%;
+  }
+  .footer div {
+    width: 80%;
+  }
+}
+@media only screen and (max-width: 960px) and (max-height: 500px) and (orientation: landscape) {
+  nav {
+    height: 20vh;
+  }
+  nav .to-right {
+    width: 20%;
+    justify-content: right;
+  }
+  nav .search-container {
+    height: 40%;
+  }
+  nav .search-container input::-moz-placeholder {
+    color: white;
+    opacity: 0.5;
+    font-size: 0.7rem;
+  }
+  nav .search-container input::placeholder {
+    color: white;
+    opacity: 0.5;
+    font-size: 0.7rem;
+  }
+  .featured {
+    height: 200vh;
   }
   .featured .featured-movie div {
     width: 80%;
@@ -499,7 +537,7 @@ nav .to-right h4 {
     font-size: 0.7rem;
   }
   .featured {
-    height: 90vh;
+    height: 100vh;
   }
   .featured .featured-movie div {
     width: 85%;

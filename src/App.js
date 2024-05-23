@@ -8,9 +8,10 @@ import './asset/css/App.css';
 import SearchIcon from './asset/icons/search_icon.svg';
 import Logo from './asset/icons/Logo.png';
 import HamMenu from './asset/icons/Menu.svg';
-import Tag from './components/Tag.jsx';
+import GenreTag from './components/GenreTag.jsx';
 import SuggestedWord from './components/SuggestedWord.jsx';
 import useDebounce from './hooks/useDebounce.jsx';
+import YearTag from './components/YearTag.jsx';
 
 const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //formely popular movies endpoint was used, now changed to this discover movies endpoint to allow for filtering by genre, and probably release date.
 const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
@@ -24,6 +25,8 @@ const App = () => {
     const [currentPage, setCurrentPage] = useState(1)
     const [genres, setGenres] = useState([])
     const [selectedGenre, setSelectedGenre] = useState([])
+    const [releaseYear, setReleaseYear] = useState([])
+    const [selectedReleaseYear, setSelectedReleaseYear] = useState(null)
  
 
     let timeOut = null;
@@ -38,9 +41,8 @@ const App = () => {
     
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
-        fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`)
         try {
-            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}`);
+            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=2008`);
             const data = await response.json();
             return data.results;
         } catch (error) {
@@ -50,7 +52,6 @@ const App = () => {
     }
     const fetchSearchedMovie = async (query) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
-        fetch(`${API_URL_for_search}&query=${query}`)
         try {
             const response = await fetch(`${API_URL_for_search}&query=${query}`);
             const data = await response.json();
@@ -107,6 +108,20 @@ const App = () => {
         }  
     }, [debouncedSearchterm])
 
+    useEffect(()=> {
+        const thisYearsDate = new Date()
+        let thisYear = thisYearsDate.getFullYear()
+        let yearsArray = []
+    
+        for (let i=0; i<15; i++) {
+            yearsArray.push(thisYear)
+            thisYear -= 1;
+        }
+
+        setReleaseYear(yearsArray);
+    }, [])
+
+
     const handleSearch = async (suggestions) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
         
         fetchSearchedMovie(suggestions.title)
@@ -160,7 +175,6 @@ const App = () => {
             });
     };
 
-
  
 
     useEffect(()=> {
@@ -203,6 +217,10 @@ const App = () => {
         }else{
             setSelectedGenre((prevIds)=>[...prevIds, id])
         }
+    }
+
+    const handleSelectedYear = () => {
+        selectedReleaseYear.includes()?setReleaseYear(null) : selectedReleaseYear()
     }
 
     
@@ -267,9 +285,17 @@ const App = () => {
 
             <div className="movie-list-header">
                 <h1>Featured Movies</h1>
-                <h3>Filter by Genre:</h3>
+                <h2>Filter by:</h2>
+                <h3>Genre:</h3>
                 <div className="for-genres">
-                    {genres.map((genre)=> <Tag key={genre.id} genre={genre} handleSelection={handleSelectedGenre} id={genre.id}/>)}
+                    {genres.map((genre)=> <GenreTag key={genre.id} genre={genre} handleSelection={handleSelectedGenre} id={genre.id}/>)}
+                </div>
+                
+                <div>
+                    <label><h3>Year:</h3></label>
+                    <select>
+                    {releaseYear.map((year, index)=> <YearTag key={index} year={year}/>)}
+                    </select>
                 </div>
                 
             </div>
