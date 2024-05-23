@@ -42,7 +42,7 @@ const App = () => {
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
         try {
-            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=2008`);
+            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=${selectedReleaseYear}`);
             const data = await response.json();
             return data.results;
         } catch (error) {
@@ -63,7 +63,7 @@ const App = () => {
     }
 
     useEffect(()=>{ 
-        setMovies([])       
+        setMovies([]) 
         fetchMovies(currentPage)
         .then(results => {
             setMovies(results);
@@ -87,7 +87,7 @@ const App = () => {
         })
 
 
-    },[selectedGenre])
+    },[selectedGenre, selectedReleaseYear])
 
    
     useEffect(()=> {
@@ -219,9 +219,13 @@ const App = () => {
         }
     }
 
-    const handleSelectedYear = () => {
-        selectedReleaseYear.includes()?setReleaseYear(null) : selectedReleaseYear()
-    }
+    // const handleSelectedYear = () => {
+    //     selectedReleaseYear.includes()?setReleaseYear(null) : selectedReleaseYear()
+    // }
+
+    useEffect(()=>{  //little beginner way to reset year options anytime genre selection changes, giving the user the ability to choose desired releae year.
+        setSelectedReleaseYear("select")
+    }, [selectedGenre])
 
     
   
@@ -293,7 +297,8 @@ const App = () => {
                 
                 <div>
                     <label><h3>Year:</h3></label>
-                    <select>
+                    <select value={selectedReleaseYear} onChange={(e)=> {setSelectedReleaseYear(e.target.value)}}>
+                    <option value="select" selected disabled>Select year</option>
                     {releaseYear.map((year, index)=> <YearTag key={index} year={year}/>)}
                     </select>
                 </div>

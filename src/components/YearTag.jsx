@@ -2,7 +2,7 @@ import React from 'react'
 
 const YearTag = ({year}) => {
   return (
-    <option>
+    <option value={year}>
       {year}
     </option>
   )
