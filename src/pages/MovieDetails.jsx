@@ -1,16 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom';
+import YouTube from 'react-youtube';
 
 export default function MovieDetails() {
 
   const movieInDetail = useLoaderData();
+  const [officialTrailer, setOfficialTrailer] = useState(null)
+  const [trailer, setTrailer] = useState([])
+ 
 
-  console.log(movieInDetail)
+  const trailers = movieInDetail.movieVideo;
+
+  const filteredTrailers = trailers.filter(
+    (video) =>
+      video.type === 'Trailer' &&
+      video.site === 'YouTube'
+  );  
+
+  useEffect(()=> {
+    filteredTrailers.forEach((video)=> {
+      if(video.name.toLowerCase().includes('official trailer')) {
+        setOfficialTrailer(video)
+      }else if (video.name.toLowerCase().includes('trailer')) {
+        setTrailer((prevs)=>[...prevs, video])
+      }
+    })
+  },[movieInDetail])
+      
 
   return (
     <main>
       <aside></aside>
-      <video></video>
+        {
+        officialTrailer?
+          (<YouTube videoId={officialTrailer.key} opts={{ width: '100%' }} />)
+        :
+        trailer.length > 0?
+          (<YouTube videoId={trailer[0].key} opts={{ width: '100%' }} />)
+        :
+        (<div>No trailer available</div>)
+        }
       <div>
         <h3>{movieInDetail.movieData.title}</h3>
         <h3>{movieInDetail.movieData.release_date}</h3>
