@@ -192,6 +192,46 @@ main section .red-text {
     padding: 0% 5%;
   }
 }
+@media only screen and (max-width: 960px) and (max-height: 500px) and (orientation: landscape) {
+  main {
+    min-height: 200vh;
+  }
+  main aside {
+    width: 60px;
+  }
+  main aside a {
+    padding: 20% 0;
+    justify-content: center;
+  }
+  main aside a span {
+    display: none;
+  }
+  main aside a:first-child {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30%;
+  }
+  main section {
+    height: 100%;
+    margin-left: 60px;
+    margin-top: 5%;
+    padding: 0% 5%;
+  }
+  main section .title-bar {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  main section .title-bar i {
+    display: none;
+  }
+  main section .title-bar i:last-child {
+    display: inline-block;
+  }
+  main section article {
+    margin-top: 5%;
+  }
+}
 @media only screen and (max-width: 640px) {
   main aside {
     width: 60px;
@@ -223,12 +263,6 @@ main section .red-text {
   }
   main section .title-bar i:last-child {
     display: inline-block;
-  }
-  main section .title-bar span:last-child {
-    position: absolute;
-    top: 5%;
-    right: 0;
-    margin: 0;
   }
   main section article {
     margin-top: 5%;
