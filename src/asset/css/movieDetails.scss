@@ -32,9 +32,9 @@ main{
         a {
            width: 100%;
            display: flex;
-           justify-content: center;
+           justify-content: left;
            align-items:center;
-           padding: 2% 0;
+           padding: 2% 20% 0%;
            
            span {
             margin-left: 4%;
@@ -49,6 +49,8 @@ main{
 
            &:first-child {
                 margin-bottom: 15%;
+                padding: 2% 5% 0%;
+                
                 &:hover {
                     background-color: transparent;
                     border-right: none;
@@ -211,6 +213,7 @@ main{
             width: 60px;
             a {
                 padding: 20% 0;
+                justify-content: center;
 
                 span {
                     display: none;
@@ -238,6 +241,7 @@ main{
             width: 60px;
             a {
                 padding: 20% 0;
+                justify-content: center;
 
                 span {
                     display: none;

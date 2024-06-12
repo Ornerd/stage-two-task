@@ -30,9 +30,9 @@ main aside {
 main aside a {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
-  padding: 2% 0;
+  padding: 2% 20% 0%;
 }
 main aside a span {
   margin-left: 4%;
@@ -45,6 +45,7 @@ main aside a:hover {
 }
 main aside a:first-child {
   margin-bottom: 15%;
+  padding: 2% 5% 0%;
 }
 main aside a:first-child:hover {
   background-color: transparent;
@@ -175,6 +176,7 @@ main section .red-text {
   }
   main aside a {
     padding: 20% 0;
+    justify-content: center;
   }
   main aside a span {
     display: none;
@@ -196,6 +198,7 @@ main section .red-text {
   }
   main aside a {
     padding: 20% 0;
+    justify-content: center;
   }
   main aside a span {
     display: none;
