@@ -478,6 +478,10 @@ nav .to-right h4 {
   nav {
     height: 20vh;
   }
+  nav .logo {
+    -webkit-clip-path: polygon(0 0, 30% 0, 30% 100%, 0% 100%);
+            clip-path: polygon(0 0, 30% 0, 30% 100%, 0% 100%);
+  }
   nav .to-right {
     width: 20%;
     justify-content: right;
@@ -485,6 +489,7 @@ nav .to-right h4 {
   nav .search-container {
     height: 60%;
     width: 60%;
+    margin-left: -30%;
   }
   nav .search-container input::-moz-placeholder {
     color: white;
