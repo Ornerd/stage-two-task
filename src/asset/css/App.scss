@@ -572,7 +572,6 @@ nav {
 @media only screen and (max-width: 960px) and (max-height:500px) and (orientation:landscape) {
     nav {
         height: 20vh;
-        background-color: green;
         
         .to-right{
             width: 20%;
@@ -580,7 +579,8 @@ nav {
         }
 
         .search-container{
-            height: 40%;
+            height: 60%;
+            width: 60%;
 
             input {
                 &::placeholder { 
