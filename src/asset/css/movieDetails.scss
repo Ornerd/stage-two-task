@@ -113,7 +113,8 @@ main{
             }
 
             .unimportant {
-                display: flex;
+                position: relative;
+                // display: flex;
                 width: 24%;
                 height: 100%;
                 flex-direction: column;
@@ -185,3 +186,100 @@ main{
     }
 }
 
+
+@media only screen and (max-width:1200px) {
+    main {
+        section {
+            article {
+                div:first-child {
+                    width: 100%;
+                    padding: 0 auto;
+                }
+            }
+            .unimportant {
+                display: none;
+            }
+        }
+        
+    }
+    
+}
+
+@media only screen and (max-width:900px) {
+    main {
+        aside{
+            width: 60px;
+            a {
+                padding: 20% 0;
+
+                span {
+                    display: none;
+                }
+
+                &:first-child {
+                    display: flex;
+                    justify-content: center;
+                    // transform: scale(2);
+                    margin-bottom: 30%;
+
+                }   
+            }
+        }
+        section {
+            margin-left: 60px;
+            margin-top: 5%;
+            padding: 0% 5%; 
+        }
+    }
+}
+@media only screen and (max-width:640px) {
+    main {
+        aside{
+            width: 60px;
+            a {
+                padding: 20% 0;
+
+                span {
+                    display: none;
+                }
+
+                &:first-child {
+                    display: flex;
+                    justify-content: center;
+                    // transform: scale(2);
+                    margin-bottom: 30%;
+
+                }   
+            }
+        }
+        section {
+            margin-left: 60px;
+            margin-top: 5%;
+            padding: 0% 5%; 
+
+            .title-bar {
+                position: relative;
+                flex-direction: column;
+                align-items:flex-start;
+
+                i {
+                    display: none;
+                    &:last-child {
+                        display: inline-block;
+                    }
+                }
+
+                span:last-child {
+                    position: absolute;
+                    top: 5%;
+                    right: 0;
+                    margin: 0;
+                }
+            }
+
+            article {
+                margin-top: 5%;
+            }
+        }
+    }
+}

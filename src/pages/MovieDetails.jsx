@@ -3,6 +3,7 @@ import { Link, NavLink, useLoaderData } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import '../asset/css/movieDetails.css';
 import Logo from '../asset/icons/Logo black.png';
+import cutLogo from '../asset/icons/tv.png';
 import Placeholder from '../asset/images/Rectangle 37.png';
 
 export default function MovieDetails() {
@@ -10,6 +11,7 @@ export default function MovieDetails() {
   const movieInDetail = useLoaderData();
   const [officialTrailer, setOfficialTrailer] = useState(null)
   const [trailer, setTrailer] = useState([])
+  const [windowSize, setWIndowSize] = useState(window.innerWidth)
  
 
   console.log(movieInDetail)
@@ -31,17 +33,27 @@ export default function MovieDetails() {
       }
     })
   },[movieInDetail])
+
+  useEffect(()=> {  //the lengths I go to get responsive layouts ehh! shoutout to ksforgeeks.org though for this idea
+    const handleScreenResize= ()=> {
+      setWIndowSize(window.innerWidth)
+    }
+    window.addEventListener('resize', handleScreenResize)
+    return ()=> {
+      window.removeEventListener('resize', handleScreenResize)
+    }
+  }, [])
       
 
   return (
-    <main>
+    <main onRes>
       <aside>
-        <Link to={'/'}><img class="logo" src={Logo} alt="logo"/></Link>
-        <NavLink><i className="fa fa-home" aria-hidden="true" style={{ color:'black'}}></i><span>Home</span></NavLink>
-        <NavLink><i className="fa fa-video-camera" aria-hidden="true" style={{ color:'black'}}></i><span>Movies</span></NavLink>
-        <NavLink><i className="fa fa-television" aria-hidden="true" style={{ color:'black'}}></i><span>TV Series</span></NavLink>
-        <NavLink><i className="fa fa-calendar" aria-hidden="true" style={{ color:'black'}}></i><span>Upcoming</span></NavLink>
-        <NavLink><i className="fa fa-sign-in" aria-hidden="true" style={{ color:'black'}}></i><span>Log in</span></NavLink>
+        <Link to={'/'}>{windowSize < 900? (<img class="logo" src={cutLogo} alt="logo"/>) : (<img class="logo" src={Logo} alt="logo"/>) }</Link>
+        <NavLink><i className="fa fa-home" aria-hidden="true"  style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Home</span></NavLink>
+        <NavLink><i className="fa fa-video-camera" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Movies</span></NavLink>
+        <NavLink><i className="fa fa-television" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>TV Series</span></NavLink>
+        <NavLink><i className="fa fa-calendar" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Upcoming</span></NavLink>
+        <NavLink><i className="fa fa-sign-in" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Log in</span></NavLink>
       </aside>
       <section>
       <div className='video-wrapper'>

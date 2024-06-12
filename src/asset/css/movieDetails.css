@@ -98,7 +98,7 @@ main section article div:first-child .cast-and-crew span {
   margin: 1% 0;
 }
 main section article .unimportant {
-  display: flex;
+  position: relative;
   width: 24%;
   height: 100%;
   flex-direction: column;
@@ -158,4 +158,76 @@ main section article .unimportant div span p {
 }
 main section .red-text {
   color: #BE123C;
+}
+
+@media only screen and (max-width: 1200px) {
+  main section article div:first-child {
+    width: 100%;
+    padding: 0 auto;
+  }
+  main section .unimportant {
+    display: none;
+  }
+}
+@media only screen and (max-width: 900px) {
+  main aside {
+    width: 60px;
+  }
+  main aside a {
+    padding: 20% 0;
+  }
+  main aside a span {
+    display: none;
+  }
+  main aside a:first-child {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30%;
+  }
+  main section {
+    margin-left: 60px;
+    margin-top: 5%;
+    padding: 0% 5%;
+  }
+}
+@media only screen and (max-width: 640px) {
+  main aside {
+    width: 60px;
+  }
+  main aside a {
+    padding: 20% 0;
+  }
+  main aside a span {
+    display: none;
+  }
+  main aside a:first-child {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30%;
+  }
+  main section {
+    margin-left: 60px;
+    margin-top: 5%;
+    padding: 0% 5%;
+  }
+  main section .title-bar {
+    position: relative;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  main section .title-bar i {
+    display: none;
+  }
+  main section .title-bar i:last-child {
+    display: inline-block;
+  }
+  main section .title-bar span:last-child {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    margin: 0;
+  }
+  main section article {
+    margin-top: 5%;
+  }
 }/*# sourceMappingURL=movieDetails.css.map */
