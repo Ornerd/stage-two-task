@@ -1,0 +1,161 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  font-family: "Poppins", sans-serif;
+}
+
+main {
+  display: flex;
+  width: 100vw;
+}
+main aside {
+  position: fixed;
+  background-color: white;
+  border: solid;
+  border-width: 1px;
+  border-radius: 0 20px 20px 0;
+  border-color: rgba(71, 71, 71, 0.23);
+  height: 100vh;
+  width: 210px;
+  padding: 2% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+main aside a {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2% 0;
+}
+main aside a span {
+  margin-left: 4%;
+}
+main aside a:hover {
+  background-color: rgba(190, 18, 61, 0.0784313725);
+  border-right: 2px solid #BE123C;
+  color: #BE123C;
+  font-weight: bold;
+}
+main aside a:first-child {
+  margin-bottom: 15%;
+}
+main aside a:first-child:hover {
+  background-color: transparent;
+  border-right: none;
+}
+main aside a:last-child {
+  margin-top: auto;
+}
+main section {
+  margin-left: 210px;
+  padding: 2%;
+}
+main section .video-wrapper {
+  height: 50vh;
+  border-radius: 16px;
+}
+main section .video-wrapper > * {
+  height: 100%;
+  overflow: hidden;
+}
+main section .title-bar {
+  display: flex;
+  align-items: center;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 1% 0;
+}
+main section .title-bar > * {
+  margin-right: 1%;
+}
+main section .title-bar span:last-child {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+main section article {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1%;
+}
+main section article div:first-child {
+  width: 75%;
+  padding: 0 2% 0 0;
+}
+main section article div:first-child .cast-and-crew {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1%;
+}
+main section article div:first-child .cast-and-crew span {
+  margin: 1% 0;
+}
+main section article .unimportant {
+  display: flex;
+  width: 24%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+main section article .unimportant button {
+  width: 100%;
+  padding: 1.5% 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-radius: 8px;
+  border-color: #BE123C;
+  margin-bottom: 2.5%;
+}
+main section article .unimportant button:first-child {
+  background-color: #BE123C;
+  color: white;
+}
+main section article .unimportant button:last-child {
+  background-color: rgba(190, 18, 61, 0.7254901961);
+  color: white;
+}
+main section article .unimportant div {
+  position: relative;
+  margin-top: 3%;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  height: 25vh;
+}
+main section article .unimportant div img {
+  width: 100%;
+  height: 100%;
+}
+main section article .unimportant div span {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+  padding-left: 3px;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+main section article .unimportant div span p {
+  color: white;
+  font-size: 0.75rem;
+}
+main section .red-text {
+  color: #BE123C;
+}/*# sourceMappingURL=movieDetails.css.map */
