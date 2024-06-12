@@ -489,7 +489,7 @@ nav .to-right h4 {
   nav .search-container {
     height: 60%;
     width: 60%;
-    margin-left: -30%;
+    margin-left: -15%;
   }
   nav .search-container input::-moz-placeholder {
     color: white;
