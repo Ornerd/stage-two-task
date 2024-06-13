@@ -75,7 +75,7 @@ export default function MovieDetails() {
         <h4>{movieInDetail.movieData.release_date.split('-')[0]}</h4>
         <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
         <h4>duration</h4>
-        {movieInDetail.movieData.genres.map((genre)=> <h5 key={genre.id}>{genre.name}</h5> )}
+        <span>{movieInDetail.movieData.genres.map((genre)=> <h5 key={genre.id}>{genre.name}</h5>)}</span>
         <span><i className="fa fa-star" aria-hidden="true" style={{ color:'yellow', paddingRight:10, paddingLeft:5 }}></i>{(movieInDetail.movieData.vote_average).toFixed(2)} | {movieInDetail.movieData.vote_count}</span>
       </div>
 
