@@ -67,7 +67,9 @@ main section .video-wrapper > * {
   overflow: hidden;
 }
 main section .title-bar {
+  width: calc(100vw - 210px);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   height: -moz-fit-content;
   height: fit-content;
@@ -75,6 +77,8 @@ main section .title-bar {
 }
 main section .title-bar > * {
   margin-right: 1%;
+  display: flex;
+  flex-shrink: 0;
 }
 main section .title-bar span:last-child {
   margin-left: auto;

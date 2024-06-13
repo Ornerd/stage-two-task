@@ -46,9 +46,10 @@ export default function MovieDetails() {
       
 
   return (
-    <main onRes>
+    <main>
+
       <aside>
-        <Link to={'/'}>{windowSize < 900? (<img class="logo" src={cutLogo} alt="logo"/>) : (<img class="logo" src={Logo} alt="logo"/>) }</Link>
+        <Link to={'/'}>{windowSize < 900? (<img className="logo" src={cutLogo} alt="logo"/>) : (<img class="logo" src={Logo} alt="logo"/>) }</Link>
         <NavLink><i className="fa fa-home" aria-hidden="true"  style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Home</span></NavLink>
         <NavLink><i className="fa fa-video-camera" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Movies</span></NavLink>
         <NavLink><i className="fa fa-television" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>TV Series</span></NavLink>
@@ -70,13 +71,14 @@ export default function MovieDetails() {
         
       <div className='title-bar'>
         <h3>{movieInDetail.movieData.title}</h3>
-        <i class="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
+        <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
         <h4>{movieInDetail.movieData.release_date.split('-')[0]}</h4>
-        <i class="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
+        <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
         <h4>duration</h4>
-        <h5>genre</h5>
-        <span><i className="fa fa-star" aria-hidden="true" style={{ color:'yellow', paddingRight:10, paddingLeft:5 }}></i>vote average | vote_count</span>
+        {movieInDetail.movieData.genres.map((genre)=> <h5 key={genre.id}>{genre.name}</h5> )}
+        <span><i className="fa fa-star" aria-hidden="true" style={{ color:'yellow', paddingRight:10, paddingLeft:5 }}></i>{(movieInDetail.movieData.vote_average).toFixed(2)} | {movieInDetail.movieData.vote_count}</span>
       </div>
+
       <article>
         <div>
           <p>{movieInDetail.movieData.overview}</p>
@@ -99,7 +101,6 @@ export default function MovieDetails() {
       </article>
       </section>
         
-      
     </main>
   )
 }

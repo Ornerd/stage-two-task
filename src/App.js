@@ -233,7 +233,7 @@ const App = () => {
         <div className="app">
            
             <nav>
-                <img class="logo"
+                <img className="logo"
                     src={Logo}
                     alt="logo"
                     onClick={refreshPage}
