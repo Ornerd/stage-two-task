@@ -558,6 +558,9 @@ nav .to-right h4 {
   .movie-list .movie-card:first-child {
     margin-top: 7%;
   }
+  .movie-list .movie-card div div {
+    margin-top: 2%;
+  }
   .footer {
     margin-top: 14%;
   }
