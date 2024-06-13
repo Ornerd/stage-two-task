@@ -91,7 +91,7 @@ main section .title-bar .genre-container h6 {
   border-width: 1px;
   border-style: solid;
   border-radius: 14px;
-  padding: 2% 3%;
+  padding: 5px 11px;
   border-color: rgba(150, 49, 74, 0.37);
   margin-right: 10px;
   flex-shrink: 0;
