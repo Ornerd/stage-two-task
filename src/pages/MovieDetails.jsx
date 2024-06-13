@@ -38,7 +38,7 @@ export default function MovieDetails() {
     }
   }
   const formattedRunTime = formatRuntime();
-  
+
 
   useEffect(()=> {
     filteredTrailers.forEach((video)=> {
@@ -142,10 +142,10 @@ export default function MovieDetails() {
           <p>{movieInDetail.movieData.overview}</p>
           <div className='cast-and-crew'>
             <span>
-              <span>{directors.length>1? "Directors: ": "Director: "}</span> {directors.map((director, index)=> index === directors.length-1? <span className='red-text'>{director.name}</span>:<span className='red-text'>{director.name}, </span>)}
+              <span>{directors.length>1? "Directors: ": "Director: "}</span> {directors.map((director, index)=> index === directors.length-1? <span key={index} className='red-text'>{director.name}</span>:<span key={index} className='red-text'>{director.name}, </span>)}
             </span>
             <span>
-              <span>{writers.length>1? "Writers: ": "Writer: "}</span>{writers.map((writer, index)=> index === writers.length-1? <span className='red-text'>{writer.name}</span>:<span className='red-text'>{writer.name}, </span>)}
+              <span>{writers.length>1? "Writers: ": "Writer: "}</span>{writers.map((writer, index)=> index === writers.length-1? <span key={index} className='red-text'>{writer.name}</span>:<span key={index}className='red-text'>{writer.name}, </span>)}
             </span>
             <span>
               <span>Stars: </span>{movieInDetail.creditsData.cast.slice(0,3).map((cast, index)=> index === movieInDetail.creditsData.cast.slice(0,3).length-1 ? <span key={cast.id} className='red-text'>{cast.name}</span> : <span key={cast.id} className='red-text'>{cast.name}, </span>)}
