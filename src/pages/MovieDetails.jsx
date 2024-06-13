@@ -16,7 +16,7 @@ export default function MovieDetails() {
   const [writers, setWriters] = useState([])
  
 
-  console.log(movieInDetail.creditsData.crew)
+  console.log(movieInDetail)
 
   const trailers = movieInDetail.movieVideo;
 
@@ -25,6 +25,19 @@ export default function MovieDetails() {
       video.type === 'Trailer' &&
       video.site === 'YouTube'
     );  
+
+
+  const formatRuntime = () => {
+    const runtimeMinutes = movieInDetail.movieData.runtime
+    if (runtimeMinutes >= 60) {
+      const hours = Math.floor(runtimeMinutes / 60)
+      const mins = runtimeMinutes % 60
+      return `${hours}h ${mins}m`
+    }else {
+        return `${runtimeMinutes}m`
+    }
+  }
+  const formattedRunTime = formatRuntime();
   
 
   useEffect(()=> {
@@ -52,6 +65,7 @@ export default function MovieDetails() {
         }
       }
     )  
+
   }, [])
 
 
@@ -114,7 +128,7 @@ export default function MovieDetails() {
         <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
         <h4>{movieInDetail.movieData.release_date.split('-')[0]}</h4>
         <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
-        <h4>duration</h4>
+        <h4>{formattedRunTime}</h4>
         <span className='genre-container'>
           {movieInDetail.movieData.genres.map((genre)=> <h6 key={genre.id}>{genre.name}</h6>)}
         </span>
