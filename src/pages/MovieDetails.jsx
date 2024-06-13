@@ -12,9 +12,11 @@ export default function MovieDetails() {
   const [officialTrailer, setOfficialTrailer] = useState(null)
   const [trailer, setTrailer] = useState([])
   const [windowSize, setWIndowSize] = useState(window.innerWidth)
+  const [directors, setDirectors] = useState([])
+  const [writers, setWriters] = useState([])
  
 
-  console.log(movieInDetail)
+  console.log(movieInDetail.creditsData.crew)
 
   const trailers = movieInDetail.movieVideo;
 
@@ -23,6 +25,7 @@ export default function MovieDetails() {
       video.type === 'Trailer' &&
       video.site === 'YouTube'
     );  
+  
 
   useEffect(()=> {
     filteredTrailers.forEach((video)=> {
@@ -31,11 +34,30 @@ export default function MovieDetails() {
       }else if (video.name.toLowerCase().includes('trailer')) {
         setTrailer((prevs)=>[...prevs, video])
       }
-    })
+    })    
   },[movieInDetail])
 
-  useEffect(()=> {  //the lengths I go to get responsive layouts ehh! shoutout to ksforgeeks.org though for this idea
-    const handleScreenResize= ()=> {
+  useEffect(()=> {
+    movieInDetail.creditsData.crew.forEach(
+      (crewMember)=> {
+        if(crewMember.job === 'Director') {
+            setDirectors((prev)=>[...prev].includes(crewMember)?[...prev]:[...prev, crewMember]);
+        }
+      }
+    )  
+    movieInDetail.creditsData.crew.forEach(
+      (crewMember)=> {
+        if(crewMember.job === 'Writer' || crewMember.job === 'Screenplay') {
+            setWriters((prev)=>[...prev].includes(crewMember)?[...prev]:[...prev, crewMember]);
+        }
+      }
+    )  
+  }, [])
+
+
+  useEffect(()=> {  
+
+    const handleScreenResize= ()=> { //the lengths I go to get responsive layouts ehh! shoutout to ksforgeeks.org though for this idea
       setWIndowSize(window.innerWidth)
     }
     window.addEventListener('resize', handleScreenResize)
@@ -49,13 +71,31 @@ export default function MovieDetails() {
     <main>
 
       <aside>
-        <Link to={'/'}>{windowSize < 900? (<img className="logo" src={cutLogo} alt="logo"/>) : (<img class="logo" src={Logo} alt="logo"/>) }</Link>
-        <NavLink><i className="fa fa-home" aria-hidden="true"  style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Home</span></NavLink>
-        <NavLink><i className="fa fa-video-camera" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Movies</span></NavLink>
-        <NavLink><i className="fa fa-television" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>TV Series</span></NavLink>
-        <NavLink><i className="fa fa-calendar" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Upcoming</span></NavLink>
-        <NavLink><i className="fa fa-sign-in" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i><span>Log in</span></NavLink>
+        <Link to={'/'}>
+          {windowSize < 900? (<img className="logo" src={cutLogo} alt="logo"/>) : (<img class="logo" src={Logo} alt="logo"/>) }
+        </Link>
+        <NavLink>
+          <i className="fa fa-home" aria-hidden="true"  style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i>
+          <span>Home</span>
+        </NavLink>
+        <NavLink>
+          <i className="fa fa-video-camera" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i>
+          <span>Movies</span>
+        </NavLink>
+        <NavLink>
+          <i className="fa fa-television" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i>
+          <span>TV Series</span>
+        </NavLink>
+        <NavLink>
+          <i className="fa fa-calendar" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i>
+          <span>Upcoming</span>
+        </NavLink>
+        <NavLink>
+          <i className="fa fa-sign-in" aria-hidden="true" style={windowSize < 900?{ fontSize:40, color:'black'}:{ color:'black'}}></i>
+          <span>Log in</span>
+        </NavLink>
       </aside>
+
       <section>
       <div className='video-wrapper'>
           {
@@ -75,17 +115,27 @@ export default function MovieDetails() {
         <h4>{movieInDetail.movieData.release_date.split('-')[0]}</h4>
         <i className="fa fa-circle" aria-hidden="true" style={{fontSize: 7}} ></i>
         <h4>duration</h4>
-        <span className='genre-container'>{movieInDetail.movieData.genres.map((genre)=> <h6 key={genre.id}>{genre.name}</h6>)}</span>
-        <span><i className="fa fa-star" aria-hidden="true" style={{ color:'yellow', paddingRight:10, paddingLeft:5 }}></i>{(movieInDetail.movieData.vote_average).toFixed(2)} | {movieInDetail.movieData.vote_count}</span>
+        <span className='genre-container'>
+          {movieInDetail.movieData.genres.map((genre)=> <h6 key={genre.id}>{genre.name}</h6>)}
+        </span>
+        <span>
+          <i className="fa fa-star" aria-hidden="true" style={{ color:'yellow', paddingRight:10, paddingLeft:5 }}></i>{(movieInDetail.movieData.vote_average).toFixed(2)} | {movieInDetail.movieData.vote_count}
+        </span>
       </div>
 
       <article>
         <div>
           <p>{movieInDetail.movieData.overview}</p>
           <div className='cast-and-crew'>
-            <span><span>Director: </span><span className='red-text'>yenyenyen</span></span>
-            <span><span>Writers: </span><span className='red-text'>yenyenyen</span></span>
-            <span><span>Stars: </span><span className='red-text'>yenyenyen</span></span>
+            <span>
+              <span>{directors.length>1? "Directors: ": "Director: "}</span> {directors.map((director, index)=> index === directors.length-1? <span className='red-text'>{director.name}</span>:<span className='red-text'>{director.name}, </span>)}
+            </span>
+            <span>
+              <span>{writers.length>1? "Writers: ": "Writer: "}</span>{writers.map((writer, index)=> index === writers.length-1? <span className='red-text'>{writer.name}</span>:<span className='red-text'>{writer.name}, </span>)}
+            </span>
+            <span>
+              <span>Stars: </span>{movieInDetail.creditsData.cast.slice(0,3).map((cast, index)=> index === movieInDetail.creditsData.cast.slice(0,3).length-1 ? <span key={cast.id} className='red-text'>{cast.name}</span> : <span key={cast.id} className='red-text'>{cast.name}, </span>)}
+            </span>
           </div>
         </div>
         <div className='unimportant'>
