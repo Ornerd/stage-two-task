@@ -548,6 +548,9 @@ nav .to-right h4 {
   .featured .featured-movie div {
     width: 85%;
   }
+  .featured .featured-movie img {
+    filter: brightness(10%);
+  }
   .movie-list .movie-card {
     width: 100%;
     margin-top: 7%;
