@@ -294,6 +294,9 @@ main section .red-text {
   main section .title-bar .genre-container {
     margin: 3% 0;
   }
+  main section .title-bar .genre-container h6 {
+    margin-top: 2%;
+  }
   main section .title-bar i {
     display: none;
   }
