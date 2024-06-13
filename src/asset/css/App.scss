@@ -679,6 +679,20 @@ nav {
             }
         }
     }
+
+    .footer{
+        margin-top: 14%;
+        
+
+        div:nth-child(2) {
+            flex-direction: column;
+            align-items: center;
+
+            &>* {
+                margin: 2% 0;
+            }
+        }
+    }
 }
 
 

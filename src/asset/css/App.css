@@ -558,6 +558,16 @@ nav .to-right h4 {
   .movie-list .movie-card:first-child {
     margin-top: 7%;
   }
+  .footer {
+    margin-top: 14%;
+  }
+  .footer div:nth-child(2) {
+    flex-direction: column;
+    align-items: center;
+  }
+  .footer div:nth-child(2) > * {
+    margin: 2% 0;
+  }
 }
 .display-hidden {
   width: 0%;
