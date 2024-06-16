@@ -587,7 +587,14 @@ nav .to-right h4 {
   border-radius: 0.5em;
   position: relative;
 }
-.inverted input {
+.inverted .search-bar {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  border: none;
+  position: relative;
+}
+.inverted .search-bar input {
   width: 100%;
   border: none;
   height: 100%;
@@ -595,11 +602,45 @@ nav .to-right h4 {
   color: black;
   padding: 10px;
 }
-.inverted input::-moz-placeholder {
+.inverted .search-bar input::-moz-placeholder {
   color: black;
   opacity: 0.7;
 }
-.inverted input::placeholder {
+.inverted .search-bar input::placeholder {
   color: black;
   opacity: 0.7;
-}/*# sourceMappingURL=App.css.map */
+}
+
+.loading {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0%;
+  left: 0%;
+  opacity: 1;
+  z-index: 10000;
+  background-color: rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+}
+.loading::after {
+  content: "loading...";
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0%;
+  left: 0%;
+  font-size: 2rem;
+}
+
+.no-interactions {
+  pointer-events: none;
+  overflow-y: hidden;
+}

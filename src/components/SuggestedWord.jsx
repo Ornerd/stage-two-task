@@ -1,13 +1,13 @@
 import React from 'react'
 
-const SuggestedWord = ({suggestions, handleClick}) => {
+const SuggestedWord = ({suggestion, handleClick}) => {
   const handleClicking = ()=> {
-    handleClick(suggestions)
+    handleClick(suggestion)
   }
 
   return (
     <div className='suggested-word' onClick={handleClicking}>
-      {suggestions.title}
+      {suggestion.title}
     </div>
   )
 }

@@ -719,20 +719,68 @@ nav {
     border-radius: 0.5em;
     position: relative;
 
-
-    input{
+    .search-bar{
         width: 100%;
+        min-height: 100%;
+        // margin-left: -7%;
+        // background-color: white;
+        display: flex;
         border: none;
-        height: 100%;
-        background-color: transparent;
-        color: black;
-        padding: 10px;
+        position: relative;
 
-        &::placeholder { 
+        input{
+            width: 100%;
+            border: none;
+            height: 100%;
+            background-color: transparent;
             color: black;
-            opacity: 0.7; 
-          }
-    } 
+            padding: 10px;
+    
+            &::placeholder { 
+                color: black;
+                opacity: 0.7; 
+              }
+        } 
+
+    }
 
 }
 
+.loading {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    top: 0%;
+    left: 0%;
+    opacity: 1;
+    z-index: 10000;
+    background-color: rgba(255, 255, 255, 0.9);
+    pointer-events: none;
+   
+
+    &::after {
+        content: "loading...";
+        position: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100vw;
+        height: 100vh;
+        top: 0%;
+        left: 0%;
+        font-size: 2rem;
+         
+    }
+
+
+}
+
+.no-interactions {
+pointer-events: none;
+overflow-y: hidden;
+}

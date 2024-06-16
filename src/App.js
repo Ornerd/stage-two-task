@@ -12,10 +12,8 @@ import GenreTag from './components/GenreTag.jsx';
 import SuggestedWord from './components/SuggestedWord.jsx';
 import useDebounce from './hooks/useDebounce.jsx';
 import YearTag from './components/YearTag.jsx';
+import { Link, useNavigate, useNavigation } from 'react-router-dom';
 
-const API_URL="https://api.themoviedb.org/3/discover/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"; //formely popular movies endpoint was used, now changed to this discover movies endpoint to allow for filtering by genre, and probably release date.
-const API_URLtwo="https://api.themoviedb.org/3/genre/movie/list?api_key=befa3a6b18663094411ae9c1758fd3a6"; //for movie genres
-const API_URL_for_search="https://api.themoviedb.org/3/search/movie?api_key=befa3a6b18663094411ae9c1758fd3a6"
 
 const App = () => {
     const [movies, setMovies] = useState([]);
@@ -27,18 +25,23 @@ const App = () => {
     const [selectedGenre, setSelectedGenre] = useState([])
     const [releaseYear, setReleaseYear] = useState([])
     const [selectedReleaseYear, setSelectedReleaseYear] = useState(null)
- 
+    const navigationHook = useNavigation()
+    const navigateTo = useNavigate()
 
     let timeOut = null;
-    
 
     var [SearchMovies, setSearchMovies] = useState('');
     var [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
-
     const debouncedSearchterm = useDebounce(SearchMovies, 500);
     const uniqueTitlesSet = new Set(); //helped by Chat GPT, to sort out suggested movie titles ensuring that one name desn't repeat twiCE
 
     
+    const API_URL = process.env.REACT_APP_API_URL
+    const API_URLtwo = process.env.REACT_APP_API_URLtwo
+    const API_URL_for_search = process.env.REACT_APP_API_URL_for_search
+
+    console.log(API_URL, API_URL_for_search)
+
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
         try {
@@ -117,21 +120,21 @@ const App = () => {
             yearsArray.push(thisYear)
             thisYear -= 1;
         }
-
         setReleaseYear(yearsArray);
     }, [])
 
 
-    const handleSearch = async (suggestions) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
+    const handleSearch = /*async*/ (suggestion) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
         
-        fetchSearchedMovie(suggestions.title)
-        .then(results => {
-            setMovies(results.slice(0,12)) 
-            setMoviesSuggestionList([])
-        })
-        .catch(error => {
-            console.error('Error fetching more movies:', error);
-        });
+        navigateTo(`/search?search=${suggestion.title}`)
+        // fetchSearchedMovie(suggestion.title)
+        // .then(results => {
+        //     setMovies(results.slice(0,12)) 
+        //     setMoviesSuggestionList([])
+        // })
+        // .catch(error => {
+        //     console.error('Error fetching more movies:', error);
+        // });
 
     }  
 
@@ -189,7 +192,7 @@ const App = () => {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            SearchForMovies(e);
+            navigateTo(`/search?search=${SearchMovies}`)
         }
       };
 
@@ -219,10 +222,6 @@ const App = () => {
         }
     }
 
-    // const handleSelectedYear = () => {
-    //     selectedReleaseYear.includes()?setReleaseYear(null) : selectedReleaseYear()
-    // }
-
     useEffect(()=>{  //little beginner way to reset year options anytime genre selection changes, giving the user the ability to choose desired releae year.
         setSelectedReleaseYear("select")
     }, [selectedGenre])
@@ -230,7 +229,9 @@ const App = () => {
     
   
     return (
-        <div className="app">
+        <div className={navigationHook.state === "loading"? "app no-interactions": "app"}>
+
+            <div className={navigationHook.state === "loading"? "loading": ""}></div>
            
             <nav>
                 <img className="logo"
@@ -245,17 +246,19 @@ const App = () => {
                         placeholder="What do you want to watch?"
                         value={SearchMovies}
                         onChange={(e)=> {setSearchMovies(e.target.value)}}
-                        onSubmit= {()=> {SearchForMovies()}}
+                        // onSubmit= {()=> {navigateTo(`/search?search=${SearchMovies}`)}}
                         onKeyDown={handleKeyDown}
                     />
+                    <Link to={`/search?search=${SearchMovies}`}>
                     <img
                         src={SearchIcon}
-                        alt="search"
-                        onClick= {()=> {SearchForMovies()}}                        
+                        alt="searchIcon"                                             
                     />
+                    </Link>
+                    
                 </form>
                 <div className='sugggested-word-container'>
-                    {SearchMovies? uniqueMovies.map((suggestions)=> <SuggestedWord key={suggestions.id} suggestions={suggestions} handleClick={handleSearch}/>): <div></div>}
+                    {SearchMovies? uniqueMovies.map((suggestion)=> <SuggestedWord key={suggestion.id} suggestion={suggestion} handleClick={handleSearch}/>): <div></div>}
                 </div>
                 </div>
                
