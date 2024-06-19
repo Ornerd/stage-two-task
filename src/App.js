@@ -40,8 +40,6 @@ const App = () => {
     const API_URLtwo = process.env.REACT_APP_API_URLtwo
     const API_URL_for_search = process.env.REACT_APP_API_URL_for_search
 
-    console.log(API_URL, API_URL_for_search)
-
     const fetchMovies = async (page) => {
         // console.log(`${API_URL}&with_genres=16&page=${page}`)
         try {
@@ -65,8 +63,13 @@ const App = () => {
         }
     }
 
-    useEffect(()=>{ 
-        setMovies([]) 
+    useEffect(()=> {
+        fetch(API_URL)  //for hero section
+        .then((res)=>res.json())
+        .then(data=>{
+            console.log(data.results.slice(0,10))
+            setFeatured(data.results.slice(0,5))
+        })
         fetchMovies(currentPage)
         .then(results => {
             setMovies(results);
@@ -74,21 +77,18 @@ const App = () => {
         .catch(error => {
             console.error('Error fetching initial movies:', error);
         });
+    }, [])
+  
 
-        fetch(API_URL)  //for hero section
-        .then((res)=>res.json())
-        .then(data=>{
-            console.log(data.results.slice(0,10))
-            setFeatured(data.results.slice(0,5))
-        })
-
+    useEffect(()=>{ 
+        setMovies([]) 
+        
         fetch(API_URLtwo)
         .then((res)=>res.json())
         .then(data=>{
             console.log(data.genres)
             setGenres(data.genres)
         })
-
 
     },[selectedGenre, selectedReleaseYear])
 
@@ -138,18 +138,7 @@ const App = () => {
 
     }  
 
-    async function SearchForMovies(){
-
-        fetchSearchedMovie(SearchMovies)
-        .then(results => {
-            setMovies(results.slice(0,12)) 
-            setMoviesSuggestionList([])
-        })
-        .catch(error => {
-            console.error('Error fetching more movies:', error);
-        });
-
-    }
+   
 
     // Use filter to keep only unique movie titles while maintaining the order
     const uniqueMovies = moviesSuggestionList.filter(movie => {
@@ -324,7 +313,6 @@ const App = () => {
             <Footer/>
 
         </div>
-      
     )
 };
 

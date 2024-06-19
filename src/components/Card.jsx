@@ -4,9 +4,9 @@ import { useState } from 'react';
 import IMDBLogo from '../asset/icons/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE@ 1.png'
 import { Link } from 'react-router-dom';
 
-const API_IMG="https://image.tmdb.org/t/p/w500/"
+const API_IMG = process.env.REACT_APP_API_IMG;
 
-const Card =({ id, poster_path, release_date, title, vote_average, genre_ids, genres })=>{
+const Card = ({ id, poster_path, release_date, title, vote_average, genre_ids, genres })=>{
 
     var [isFav, setIsFav] = useState(false);
 
