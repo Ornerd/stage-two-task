@@ -255,7 +255,11 @@ nav {
                 margin-top: 2%;
                 font-weight: 100;
                 line-height: 1.8rem;
-                overflow-x: visible;
+                // overflow-x: visible;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 7;
             }
             span{
                 position: relative;
