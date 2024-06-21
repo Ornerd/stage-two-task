@@ -643,6 +643,49 @@ nav .to-right h4 {
   font-size: 2rem;
 }
 
+.featured-trailer {
+  position: absolute;
+  top: 0%;
+  z-index: 9000;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.805);
+}
+.featured-trailer > * {
+  width: 80%;
+  height: 80%;
+  overflow: hidden;
+}
+.featured-trailer span {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+.featured-trailer span::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  background-color: white;
+  rotate: 45deg;
+  cursor: pointer;
+  width: 80%;
+  height: 10%;
+  border-radius: 1rem;
+}
+.featured-trailer span::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  background-color: white;
+  rotate: -45deg;
+  cursor: pointer;
+  width: 80%;
+  height: 10%;
+  border-radius: 1rem;
+}
+
 .no-interactions {
   pointer-events: none;
   opacity: 0.5;

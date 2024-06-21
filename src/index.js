@@ -7,11 +7,19 @@ import {
 import App from './App.js';
 import MovieDetails, { MovieDetailsLoader } from './pages/MovieDetails.jsx';
 import SearchResults from './pages/SearchResults.jsx';
+import Trailerview, { MovieVideoLoader } from './components/Trailerview.jsx';
 
 const ourDefaultRouter = createBrowserRouter([
     {
       path: "/",
       element: <App/>,
+      children: [
+        {
+          path: "/:videoId",
+          element: <Trailerview/>,
+          loader: MovieVideoLoader,
+        }
+      ]
     },
     {
       path: "search",

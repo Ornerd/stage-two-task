@@ -12,7 +12,7 @@ import GenreTag from './components/GenreTag.jsx';
 import SuggestedWord from './components/SuggestedWord.jsx';
 import useDebounce from './hooks/useDebounce.jsx';
 import YearTag from './components/YearTag.jsx';
-import { Link, useNavigate, useNavigation } from 'react-router-dom';
+import { Link, Outlet, useNavigate, useNavigation } from 'react-router-dom';
 
 
 const App = () => {
@@ -64,7 +64,7 @@ const App = () => {
             return [];
         }
     }
-    
+
     const fetchSearchedMovie = async (query) => {
         try {
             const response = await fetch(`${API_URL_for_search}&query=${query}`);
@@ -286,6 +286,8 @@ const App = () => {
                  <aside>
                     {featured.map((featured, featIndex)=><Indicator key={featIndex} label = {featIndex + 1} handleToggle={handleToggle} slideIndex={featIndex} currentIndex={currentIndex}/>)}
                  </aside>
+
+                 <Outlet/>
             </div>
 
             <div className="movie-list-header">

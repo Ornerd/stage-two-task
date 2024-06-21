@@ -784,6 +784,53 @@ nav {
 
 }
 
+.featured-trailer {
+    position: absolute;
+    top: 0%;
+    z-index: 9000;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.805);
+
+    &>* {
+        width: 80%;
+        height: 80%;
+        overflow: hidden;
+    }
+
+    span {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 20px;
+        right: 30px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            background-color: white;
+            rotate: 45deg;
+            cursor: pointer;
+            width: 80%;
+            height: 10%;
+            border-radius: 1rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            background-color: white;
+            rotate: -45deg;
+            cursor: pointer;
+            width: 80%;
+            height: 10%;
+            border-radius: 1rem;
+        }
+    }
+}
+
 .no-interactions {
 pointer-events: none;
 opacity: 0.5;
