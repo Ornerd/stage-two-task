@@ -119,7 +119,7 @@ export default function MovieDetails() {
           trailer.length > 0?
             (<YouTube videoId={trailer[0].key} opts={{ width:'100%', height:'100%' }} />)
           :
-          (<div>No trailer available</div>)
+          (<div className='place-center' style={{width: "100%", height: "100%"}}>No trailer available</div>)
           }
         </div>
         

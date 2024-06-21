@@ -647,3 +647,9 @@ nav .to-right h4 {
   pointer-events: none;
   opacity: 0.5;
 }
+
+.place-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

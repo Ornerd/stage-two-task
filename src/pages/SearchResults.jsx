@@ -25,11 +25,26 @@ const SearchResults = () => {
     const [moviesSuggestionList, setMoviesSuggestionList] = useState([]);
     const [genres, setGenres] = useState([])
     const debouncedSearchterm = useDebounce(movieKeyword, 500);
+    const [loading, setLoading] = useState(true)
     const uniqueTitlesSet = new Set();
     const navigationHook = useNavigation()
 
 
     const fetchSearchedMovie = async (query) => {
+        setLoading(true)
+        try {
+            const response = await fetch(`${API_URL_for_search}&query=${query}`);
+            const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            return [];
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    const fetchSearchedMovieSuggestion = async (query) => {
         try {
             const response = await fetch(`${API_URL_for_search}&query=${query}`);
             const data = await response.json();
@@ -93,7 +108,7 @@ const SearchResults = () => {
     useEffect(()=> {
         async function loadMovieSuggestions(){
 
-            fetchSearchedMovie(debouncedSearchterm)
+            fetchSearchedMovieSuggestion(debouncedSearchterm)
             .then(results => {
                 if(debouncedSearchterm !== searchKeyword) {
                     setMoviesSuggestionList(results)
@@ -197,6 +212,9 @@ const SearchResults = () => {
 
     <section className='results-container'>
         {
+            loading? 
+            <div className='loading no-interactions'></div>
+            :
             movieResults?.length > 0?
             movieResults.slice(0, displayedAmount).map((movieResult)=> {
                 return <SearchResult genres={genres} key={movieResult.id}{...movieResult}/>

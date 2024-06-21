@@ -42,7 +42,7 @@ const App = () => {
     const API_URL_for_search = process.env.REACT_APP_API_URL_for_search
 
     const fetchMovies = async (page) => {
-        setLoading(false)
+        setLoading(true)
         try {
             const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=${selectedReleaseYear}`);
             const data = await response.json();
@@ -54,6 +54,17 @@ const App = () => {
             setLoading(false)
         }
     }
+    const fetchMoreMovies = async (page) => {
+        try {
+            const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=${selectedReleaseYear}`);
+            const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Error fetching movies:', error);
+            return [];
+        }
+    }
+    
     const fetchSearchedMovie = async (query) => {
         try {
             const response = await fetch(`${API_URL_for_search}&query=${query}`);
@@ -84,8 +95,7 @@ const App = () => {
     useEffect(()=> {
         fetchMovies(currentPage)
         .then(results => {
-            setMovies(results);
-            loading ? console.log("akwenge", loading) : console.log("akwengeKe", loading)
+            setMovies(results); 
         })
         .catch(error => {
             console.error('Error fetching initial movies:', error);
@@ -158,7 +168,7 @@ const App = () => {
    
     const showMoreMovies = () => {
         const nextPage = currentPage + 1;
-        fetchMovies(nextPage)
+        fetchMoreMovies(nextPage)
             .then(results => {
                 setMovies(prevMovies => [...prevMovies, ...results]);
                 setCurrentPage(nextPage);
@@ -262,8 +272,6 @@ const App = () => {
                 </div>
 
             </nav>
-
-            
             
             <div className='featured' onClick={()=> setMoviesSuggestionList([])}>
                  {featured.map((featuredMovie, index)=> {
@@ -298,7 +306,9 @@ const App = () => {
                 
             </div>
 
-            {
+            {   loading? 
+                <div className='loading no-interactions'></div>
+                :
                 movies?.length > 0
                     ? (
                         <div className="movie-list">                                                 
