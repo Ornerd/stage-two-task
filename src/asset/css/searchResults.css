@@ -1,19 +1,151 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
-* {
+.results-container {
   margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  font-family: "Poppins", sans-serif;
+  padding: 0 auto;
 }
 
 .results-area {
-  display: block;
-  padding-top: 8%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 8rem;
+}
+.results-area h1 {
+  margin-left: 7%;
 }
 .results-area nav {
   position: fixed;
   top: 0;
   background-color: white;
+}
+.results-area .search-result {
+  width: 50vw;
+  min-width: 500px;
+  max-width: 800px;
+  height: 20rem;
+  display: flex;
+  margin: 0 auto;
+  margin-bottom: 3rem;
+}
+.results-area .search-result div {
+  width: 60%;
+}
+.results-area .search-result div:first-child {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  min-width: 183px;
+}
+.results-area .search-result div a {
+  height: 100%;
+}
+.results-area .search-result div a img {
+  height: 100%;
+}
+.results-area .search-result div:last-child {
+  margin-left: 25px;
+  overflow: hidden;
+}
+.results-area .search-result div:last-child h2 {
+  line-height: 120%;
+  overflow: hidden;
+}
+.results-area .search-result div:last-child span {
+  margin-top: 2%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: -moz-fit-content;
+  width: fit-content;
+  overflow: visible;
+}
+.results-area .search-result div:last-child span h6 {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 14px;
+  padding: 5px 11px;
+  border-color: rgba(150, 49, 74, 0.37);
+  margin-right: 10px;
+  flex-shrink: 0;
+  color: #BE123C;
+}
+.results-area .search-result div:last-child p {
+  margin-top: 3%;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 7;
+}
+
+@media only screen and (max-width: 600px) {
+  .results-area .search-result {
+    width: 80vw;
+    min-width: 0px;
+    max-width: 800px;
+    height: -moz-fit-content;
+    height: fit-content;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0;
+    margin-bottom: 3.5rem;
+    overflow: visible;
+  }
+  .results-area .search-result div {
+    width: 80%;
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+  .results-area .search-result div:first-child {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    min-width: 183px;
+  }
+  .results-area .search-result div a {
+    width: 100%;
+  }
+  .results-area .search-result div a img {
+    width: 100%;
+    height: auto;
+  }
+  .results-area .search-result div:last-child {
+    margin-left: 0px;
+    overflow: visible;
+    text-align: center;
+  }
+  .results-area .search-result div:last-child h2 {
+    line-height: 120%;
+    overflow: hidden;
+  }
+  .results-area .search-result div:last-child span {
+    margin: 2% auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    width: -moz-fit-content;
+    width: fit-content;
+    overflow: visible;
+  }
+  .results-area .search-result div:last-child span h6 {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 14px;
+    padding: 5px 11px;
+    border-color: rgba(150, 49, 74, 0.37);
+    margin-right: 10px;
+    flex-shrink: 0;
+    color: #BE123C;
+  }
+  .results-area .search-result div:last-child p {
+    margin-top: 3%;
+    text-align: left;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+  }
 }
