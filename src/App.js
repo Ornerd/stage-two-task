@@ -78,7 +78,16 @@ const App = () => {
             console.error('Error fetching initial movies:', error);
         });
     }, [])
-  
+    
+    useEffect(()=> {
+        fetchMovies(currentPage)
+        .then(results => {
+            setMovies(results);
+        })
+        .catch(error => {
+            console.error('Error fetching initial movies:', error);
+        });
+    }, [selectedGenre, selectedReleaseYear])
 
     useEffect(()=>{ 
         setMovies([]) 
