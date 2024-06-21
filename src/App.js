@@ -24,7 +24,8 @@ const App = () => {
     const [genres, setGenres] = useState([])
     const [selectedGenre, setSelectedGenre] = useState([])
     const [releaseYear, setReleaseYear] = useState([])
-    const [selectedReleaseYear, setSelectedReleaseYear] = useState(null)
+    const [selectedReleaseYear, setSelectedReleaseYear] = useState()
+    const [loading, setLoading] = useState(true)
     const navigationHook = useNavigation()
     const navigateTo = useNavigate()
 
@@ -41,7 +42,7 @@ const App = () => {
     const API_URL_for_search = process.env.REACT_APP_API_URL_for_search
 
     const fetchMovies = async (page) => {
-        // console.log(`${API_URL}&with_genres=16&page=${page}`)
+        setLoading(false)
         try {
             const response = await fetch(`${API_URL}&with_genres=${selectedGenre.join(',')}&page=${page}&primary_release_year=${selectedReleaseYear}`);
             const data = await response.json();
@@ -49,10 +50,11 @@ const App = () => {
         } catch (error) {
             console.error('Error fetching movies:', error);
             return [];
+        } finally{
+            setLoading(false)
         }
     }
     const fetchSearchedMovie = async (query) => {
-        // console.log(`${API_URL}&with_genres=16&page=${page}`)
         try {
             const response = await fetch(`${API_URL_for_search}&query=${query}`);
             const data = await response.json();
@@ -67,7 +69,6 @@ const App = () => {
         fetch(API_URL)  //for hero section
         .then((res)=>res.json())
         .then(data=>{
-            console.log(data.results.slice(0,10))
             setFeatured(data.results.slice(0,5))
         })
         fetchMovies(currentPage)
@@ -76,13 +77,15 @@ const App = () => {
         })
         .catch(error => {
             console.error('Error fetching initial movies:', error);
-        });
+        })
+    
     }, [])
     
     useEffect(()=> {
         fetchMovies(currentPage)
         .then(results => {
             setMovies(results);
+            loading ? console.log("akwenge", loading) : console.log("akwengeKe", loading)
         })
         .catch(error => {
             console.error('Error fetching initial movies:', error);
@@ -95,7 +98,6 @@ const App = () => {
         fetch(API_URLtwo)
         .then((res)=>res.json())
         .then(data=>{
-            console.log(data.genres)
             setGenres(data.genres)
         })
 
@@ -134,17 +136,7 @@ const App = () => {
 
 
     const handleSearch = /*async*/ (suggestion) => {  //a little something I see on google. When a suggested word is clicked, the search bar acts on that word to produce results.          
-        
         navigateTo(`/search?search=${suggestion.title}`)
-        // fetchSearchedMovie(suggestion.title)
-        // .then(results => {
-        //     setMovies(results.slice(0,12)) 
-        //     setMoviesSuggestionList([])
-        // })
-        // .catch(error => {
-        //     console.error('Error fetching more movies:', error);
-        // });
-
     }  
 
    
@@ -284,7 +276,7 @@ const App = () => {
                   )}
 
                  <aside>
-                    {featured.map((featured, featIndex)=><Indicator key={featured[featIndex]} label = {featIndex + 1} handleToggle={handleToggle} slideIndex={featIndex} currentIndex={currentIndex}/>)}
+                    {featured.map((featured, featIndex)=><Indicator key={featIndex} label = {featIndex + 1} handleToggle={handleToggle} slideIndex={featIndex} currentIndex={currentIndex}/>)}
                  </aside>
             </div>
 

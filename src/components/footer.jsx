@@ -7,10 +7,10 @@ const Footer= () => {
     return (
         <footer className='footer'>
             <div>
-            <a href="#" class="fa fa-facebook"></a>
-            <a href="#" class="fa fa-instagram"></a>
-            <a href="#" class="fa fa-twitter"></a>
-            <a href="#" class="fa fa-youtube"></a>
+            <a href="#" className="fa fa-facebook"></a>
+            <a href="#" className="fa fa-instagram"></a>
+            <a href="#" className="fa fa-twitter"></a>
+            <a href="#" className="fa fa-youtube"></a>
             </div>
             <div>
                 <h5>Conditions of Use</h5>
