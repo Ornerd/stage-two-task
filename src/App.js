@@ -206,7 +206,6 @@ const App = () => {
             showNext();
         }, 5000)
     })
-
    
     const handleToggle = (featIndex) => {
         setCurrentIndex(featIndex)
@@ -276,7 +275,7 @@ const App = () => {
             <div className='featured' onClick={()=> setMoviesSuggestionList([])}>
                  {featured.map((featuredMovie, index)=> {
                     if (index === currentIndex) {
-                        return (<MovieBox key={featuredMovie.id}{...featuredMovie} currentIndex={currentIndex} index = {index}/>)
+                        return (<MovieBox key={featuredMovie.id}{...featuredMovie} currentIndex={currentIndex} index = {index} timeOut={timeOut}/>)
                     } else {
                         return (null)
                     }
