@@ -26,7 +26,7 @@ const ourDefaultRouter = createBrowserRouter([
       element: <SearchResults/>,
     },
     {
-      path: "/:movieId",
+      path: "movie/:movieId",
       element: <MovieDetails/>,
       loader: MovieDetailsLoader,
     }

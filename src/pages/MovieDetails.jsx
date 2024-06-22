@@ -16,8 +16,6 @@ export default function MovieDetails() {
   const [writers, setWriters] = useState([])
  
 
-  console.log(movieInDetail)
-
   const trailers = movieInDetail.movieVideo;
 
   const filteredTrailers = trailers.filter(
