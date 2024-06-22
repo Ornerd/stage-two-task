@@ -644,7 +644,7 @@ nav .to-right h4 {
 }
 
 .featured-trailer {
-  position: absolute;
+  position: fixed;
   top: 0%;
   z-index: 9000;
   width: 100vw;
