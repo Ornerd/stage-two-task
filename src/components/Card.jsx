@@ -21,12 +21,12 @@ const Card = ({ id, poster_path, release_date, title, vote_average, genre_ids, g
                         <path fillRule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path>
                     </svg>
                 </button>
-                <Link to={`movie/${id}`}>
+                <Link to={`/movie/${id}`}>
                 <img data-testid="movie-poster" src={API_IMG+poster_path !=="https://image.tmdb.org/t/p/w500/null"? API_IMG+poster_path: 'https://via.placeholder.com/400x600'} alt={title}/>
                 </Link>
                 <div>
                     <h6 data-testid="movie-release-date">{release_date.split('-')[0]}</h6>
-                    <Link to={`movie/${id}`}><h3 data-testid="movie-title">{title}</h3></Link>
+                    <Link to={`/movie/${id}`}><h3 data-testid="movie-title">{title}</h3></Link>
                     <div>
                         <img src={IMDBLogo} alt='IMDB-logo'/>
                         <h6>{Math.round(vote_average * 10) +  "/100"}</h6>
