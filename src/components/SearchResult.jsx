@@ -7,12 +7,12 @@ const SearchResult = ({poster_path, title, release_date, overview, id, genre_ids
   return (
     <section className='search-result'>
         <div>
-          <Link to={`/${id}`}>
+          <Link to={`movie/${id}`}>
             <img data-testid="movie-poster" src={API_IMG+poster_path !=="https://image.tmdb.org/t/p/w500/null"? API_IMG+poster_path: 'https://via.placeholder.com/400x600'} alt={title}/>
           </Link>
         </div>
         <div>
-          <Link to={`/${id}`}><h2>{title}</h2></Link>
+          <Link to={`movie/${id}`}><h2>{title}</h2></Link>
           <h4>date released: <i>{release_date}</i> </h4>
           <span>
             {genre_ids.map((id) => {
