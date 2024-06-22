@@ -13,6 +13,7 @@ import SuggestedWord from './components/SuggestedWord.jsx';
 import useDebounce from './hooks/useDebounce.jsx';
 import YearTag from './components/YearTag.jsx';
 import { Link, Outlet, useNavigate, useNavigation } from 'react-router-dom';
+import ChangeTitle from './components/ChangeTitle.jsx';
 
 
 const App = () => {
@@ -40,6 +41,8 @@ const App = () => {
     const API_URL = process.env.REACT_APP_API_URL
     const API_URLtwo = process.env.REACT_APP_API_URLtwo
     const API_URL_for_search = process.env.REACT_APP_API_URL_for_search
+
+    ChangeTitle('Movie Trailer App');
 
     const fetchMovies = async (page) => {
         setLoading(true)

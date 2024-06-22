@@ -5,6 +5,7 @@ import '../asset/css/movieDetails.css';
 import Logo from '../asset/icons/Logo black.png';
 import cutLogo from '../asset/icons/tv.png';
 import Placeholder from '../asset/images/Rectangle 37.png';
+import ChangeTitle from '../components/ChangeTitle';
 
 export default function MovieDetails() {
 
@@ -15,6 +16,7 @@ export default function MovieDetails() {
   const [directors, setDirectors] = useState([])
   const [writers, setWriters] = useState([])
  
+  ChangeTitle(movieInDetail.movieData.title +' – Movie Trailer App' )
 
   const trailers = movieInDetail.movieVideo;
 

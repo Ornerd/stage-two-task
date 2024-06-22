@@ -26,7 +26,7 @@ const Card = ({ id, poster_path, release_date, title, vote_average, genre_ids, g
                 </Link>
                 <div>
                     <h6 data-testid="movie-release-date">{release_date.split('-')[0]}</h6>
-                    <Link to={`/${id}`}><h3 data-testid="movie-title">{title}</h3></Link>
+                    <Link to={`movie/${id}`}><h3 data-testid="movie-title">{title}</h3></Link>
                     <div>
                         <img src={IMDBLogo} alt='IMDB-logo'/>
                         <h6>{Math.round(vote_average * 10) +  "/100"}</h6>
